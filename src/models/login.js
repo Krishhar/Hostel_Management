@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import '../css/register.css';
+import '../css/login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const LoginModal = () => {
+  const [user, setUsers] = useState([]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const LoginModal = () => {
       setEmail('');
       setPassword('');
       Fetchusers();
-      navigate('/home');
+      navigate('/');
       window.location.reload();
       localStorage.setItem('token', token);
     } catch (error) {
@@ -76,16 +77,16 @@ const LoginModal = () => {
             <div className="input-div one">
               <div className="i">
                 <i className="fas fa-user"></i>
-                <div className="div">
-                  <h5 className="h5">email</h5>
-                  <input
-                    type="text"
-                    className="input"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
+              </div>
+              <div className="div">
+                <h5 className="h5">Email</h5>
+                <input
+                  type="text"
+                  className="input"
+                  name="email"
+                  value={email}
+                  onChange = {(e)=>setEmail(e.target.value)}
+                />
               </div>
             </div>
             <div className="input-div pass">
@@ -99,13 +100,13 @@ const LoginModal = () => {
                   className="input"
                   name="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange = {(e)=>setPassword(e.target.value)}
                 />
               </div>
             </div>
             <a href="#">Forgot Password?</a>
             <button type="submit" className="btn">Login</button>
-            <a href="/login">NEW Here, then Sign Up!</a>
+            <a href="/register">NEW Here, then Sign Up!</a>
           </form>
         </div>
       </div>

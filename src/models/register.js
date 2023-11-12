@@ -190,7 +190,7 @@ const handleRegister = (event)=>{
             </div>
             <a href="#">Forgot Password?</a>
             <input type="submit" className="btn" value="Login" />
-            <a href="/register">NEW Here, then Sign Up!</a>
+            <a href="/login">NEW Here, then Sign Up!</a>
           </form>
         </div>
       </div>
