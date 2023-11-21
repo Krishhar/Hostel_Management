@@ -18,34 +18,44 @@ const Info = ({ onChange }) => {
   const [Room, setRoom] = useState('');
 
   useEffect(() => {
-    fetchusers()
-  }, [])
+    fetchusers();
+  }, []);
 
   const fetchusers = () => {
-    axios
-      .get('http://localhost:3001/form')
-      .then((res) => {
-        console.log(res.data)
-      })
-  }
+    axios.get('http://localhost:3001/form').then((res) => {
+      console.log(res.data);
+    });
+  };
 
   const handleform = (event) => {
-    event.preventDefault()
-    axios.post('http://localhost:3001/form', { firstName, lastName, outpassFor, sDate, eDate, Dept, rollNo, Year, Hostel, Room })
-      .then(() => {
-        setfirstName('')
-        setlastname('')
-        setoutpassFor('')
-        setsDate('')
-        seteDate('')
-        setDept('')
-        setRollNo('')
-        setYear('')
-        setHostel('')
-        setRoom('')
-        fetchusers()
+    event.preventDefault();
+    axios
+      .post('http://localhost:3001/form', {
+        firstName,
+        lastName,
+        outpassFor,
+        sDate,
+        eDate,
+        Dept,
+        rollNo,
+        Year,
+        Hostel,
+        Room,
       })
-  }
+      .then(() => {
+        setfirstName('');
+        setlastname('');
+        setoutpassFor('');
+        setsDate('');
+        seteDate('');
+        setDept('');
+        setRollNo('');
+        setYear('');
+        setHostel('');
+        setRoom('');
+        fetchusers();
+      });
+  };
 
   function getToday() {
     const today = new Date();
@@ -54,7 +64,37 @@ const Info = ({ onChange }) => {
     const day = today.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
-  function validateDate() {
+
+  const [errors, setErrors] = React.useState({
+    firstName: '',
+    lastName: '',
+    Year: '',
+    // Add more fields as needed
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    // Basic validation checks
+    let error = '';
+    if (name === 'firstName' || name === 'lastName' || name === 'Department' || name === 'Room') {
+      error = value.trim() === '' ? 'This field is required' : '';
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: error,
+    }));
+
+    onChange({ [name]: value });
+
+    // Validate date for start and end date
+    if (name === 'sDate' || name === 'eDate') {
+      validateDate();
+    }
+  };
+
+  const validateDate = () => {
     const startDate = document.getElementById('sDate').value;
     const endDate = document.getElementById('eDate').value;
 
@@ -75,40 +115,7 @@ const Info = ({ onChange }) => {
       alert('End date cannot be earlier than start date.');
       document.getElementById('eDate').value = startDate;
     }
-  }
-
-  // const handleOutpassForChange = (event) => {
-  //   const selectedValue = event.target.value;
-  //   console.log('Selected outpassFor:', selectedValue);
-  //   setoutpassFor(selectedValue);
-  // };
-
-
-
-  const [errors, setErrors] = React.useState({
-    firstName: '',
-    lastName: '',
-    Year: '',
-    // Add more fields as needed
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    // Basic validation checks
-    let error = '';
-    if (name === 'firstName' || name === 'lastName' || name === 'Year' || name === 'outpassFor' || name === 'Department' || name === 'Hostel' || name === 'Room') {
-      error = value.trim() === '' ? 'This field is required' : '';
-    }
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: error,
-    }));
-
-    onChange({ [name]: value });
   };
-
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -124,7 +131,7 @@ const Info = ({ onChange }) => {
             fullWidth
             autoComplete="given-name"
             variant="standard"
-            onChange={handleChange}
+            onChange={handleInputChange}
             error={Boolean(errors.firstName)}
             helperText={errors.firstName}
           />
@@ -138,7 +145,7 @@ const Info = ({ onChange }) => {
             fullWidth
             autoComplete="family-name"
             variant="standard"
-            onChange={handleChange}
+            onChange={handleInputChange}
             error={Boolean(errors.lastName)}
             helperText={errors.lastName}
           />
@@ -150,7 +157,7 @@ const Info = ({ onChange }) => {
               name="outpassFor"
               select
               value={outpassFor}
-              onChange={handleChange}
+              onChange={handleInputChange}
               fullWidth
             >
               <MenuItem value="Staying in hostel">Staying in hostel</MenuItem>
@@ -165,11 +172,11 @@ const Info = ({ onChange }) => {
           Starting Date:
           <input
             required
-            type='date'
+            type="date"
             id="sDate"
             name="sDate"
             label="Starting date"
-            onChange={handleChange}
+            onChange={handleInputChange}
             min={getToday()}
             fullWidth
           />
@@ -179,14 +186,15 @@ const Info = ({ onChange }) => {
           Ending Date:
           <input
             required
-            type='date'
+            type="date"
             id="eDate"
             name="eDate"
             label="Ending date"
-            onChange={validateDate}
+            onChange={handleInputChange}
             min={getToday()}
             fullWidth
           />
+        
 
         </Grid>
         <Grid item xs={12}>
@@ -197,19 +205,17 @@ const Info = ({ onChange }) => {
             label="Department"
             fullWidth
             variant="standard"
-            onChange={handleChange}
+            onChange={handleInputChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="Year"
-            name="Year"
-            label="Year"
-            fullWidth
-            variant="standard"
-            onChange={handleChange}
-          />
+        <TextField label="Year" id='Year' name='Year' select value={Year} onChange={handleInputChange} fullWidth>
+              <MenuItem value='1'>I</MenuItem>
+              <MenuItem value='2'>II</MenuItem>
+              <MenuItem value='3'>III</MenuItem>
+              <MenuItem value='4'>IV</MenuItem>
+              <MenuItem value='5'>V</MenuItem>
+            </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -219,19 +225,17 @@ const Info = ({ onChange }) => {
             label="Roll No"
             fullWidth
             variant="standard"
-            onChange={handleChange}
+            onChange={handleInputChange}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <TextField
-            required
-            id="hostel"
-            name="Hostel"
-            label="Hostel"
-            fullWidth
-            variant="standard"
-            onChange={handleChange}
-          />
+        <TextField label="Hostel" id='Hostel' name='Hostel' select value={Hostel} onChange={handleInputChange} fullWidth>
+              <MenuItem value='Bharathi'>Bharathi</MenuItem>
+              <MenuItem value='valluvar'>valluvar</MenuItem>
+              <MenuItem value='Sankar'>Sankar</MenuItem>
+              <MenuItem value='Dheeran'>Dheeran</MenuItem>
+              <MenuItem value='Kamban'>Kamban</MenuItem>
+            </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -241,7 +245,7 @@ const Info = ({ onChange }) => {
             label="Room No"
             fullWidth
             variant="standard"
-            onChange={handleChange}
+            onChange={handleInputChange}
           />
         </Grid>
 

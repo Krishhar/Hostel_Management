@@ -52,16 +52,16 @@ export default function Aform() {
       })
   }
 
-  // const handleNext = () => {
-  //   if (validateFormData(formData)) {
-  //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //   } else {
-  //     alert('Please fill in all required fields before proceeding.');
-  //   }
-  // };
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (validateFormData(formData)) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else {
+      alert('Please fill in all required fields before proceeding.');
+    }
   };
+  // const handleNext = () => {
+  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  // };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
