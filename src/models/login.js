@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../css/login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import 'react-hot-toast'
+import toast from 'react-hot-toast';
 
 const LoginModal = () => {
   const [user, setUsers] = useState([]);
@@ -26,7 +28,7 @@ const LoginModal = () => {
     try {
       const response = await axios.post('http://localhost:3001/login', { email, password });
       const token = response.data.token;
-      alert('Login successful');
+      toast.success('Login successful');
       setEmail('');
       setPassword('');
       Fetchusers();
@@ -35,6 +37,7 @@ const LoginModal = () => {
       localStorage.setItem('token', token);
     } catch (error) {
       console.log('Login Error', error);
+      alert('invalid credentials')
     }
   };
 
@@ -81,6 +84,7 @@ const LoginModal = () => {
               <div className="div">
                 <h5 className="h5">Email</h5>
                 <input
+                required = "true"
                   type="text"
                   className="input"
                   name="email"
@@ -96,6 +100,7 @@ const LoginModal = () => {
               <div className="div">
                 <h5 className="h5">Password</h5>
                 <input
+                required = "true"
                   type="password"
                   className="input"
                   name="password"

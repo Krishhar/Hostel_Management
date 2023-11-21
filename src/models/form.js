@@ -1,5 +1,4 @@
-// Aform.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
@@ -10,28 +9,92 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Info from './Info';
 import Review from './Review';
+import axios from 'axios';
 
 const steps = ['Information', 'Review your Details'];
 
 export default function Aform() {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
-    // Initialize your form fields here
-    name: '',
-    email: '',
-    // Add other fields as needed
+    firstName: '',
+    lastName: '',
+    outpassFor: '',
+    sDate: '',
+    eDate: '',
+    Department: '',
+    rollNo: '',
+    Year: '',
+    Hostel: '',
+    Room: '',
   });
 
+  const validateFormData = (formData) => {
+    return (
+      formData.firstName !== '' &&
+      formData.lastName !== '' &&
+      formData.Department !== '' &&
+      formData.rollNo !== '' &&
+      formData.Year !== '' &&
+      formData.Hostel !== '' &&
+      formData.Room !== ''
+    );
+  };
+
+  useEffect(() => {
+    fetchusers()
+  }, [])
+
+  const fetchusers = () => {
+    axios
+      .get('http://localhost:3001/form')
+      .then((res) => {
+        console.log(res.data)
+      })
+  }
+
+  // const handleNext = () => {
+  //   if (validateFormData(formData)) {
+  //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  //   } else {
+  //     alert('Please fill in all required fields before proceeding.');
+  //   }
+  // };
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
+  const handleForm = (event) => {
+    event.preventDefault();
+    axios
+      .post('http://localhost:3001/form', formData)
+      .then(() => {
+        console.log('Form submitted successfully');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          outpassFor: '',
+          sDate: '',
+          eDate: '',
+          Department: '',
+          rollNo: '',
+          Year: '',
+          Hostel: '',
+          Room: '',
+        });
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      })
+      .catch((error) => {
+        console.error('Error submitting form:', error);
+        alert('An error occurred while submitting the form. Please try again.');
+        console.log(error)
+      });
+  };
+
   const handleFormChange = (data) => {
-    // Update the form data
     setFormData({ ...formData, ...data });
   };
 
@@ -49,6 +112,7 @@ export default function Aform() {
   return (
     <React.Fragment>
       <CssBaseline />
+
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, borderRadius: '10px' }}>
           <Typography component="h1" variant="h4" align="center">
@@ -64,7 +128,7 @@ export default function Aform() {
           {activeStep === steps.length ? (
             <React.Fragment>
               <Typography variant="h5" gutterBottom>
-                Thank you for your order.
+                Successfully Submitted
               </Typography>
               <Typography variant="subtitle1">
                 Your Application is Submitted Successfully. You can View the Status of your Application in the Status Page. Have a Nice day
@@ -79,13 +143,12 @@ export default function Aform() {
                     Back
                   </Button>
                 )}
-
                 <Button
                   variant="contained"
-                  onClick={handleNext}
+                  onClick={activeStep === steps.length - 1 ? handleForm : handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
-                  {activeStep === steps.length - 1 ? 'SUBMIT' : 'Next'}
+                  {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
                 </Button>
               </div>
             </React.Fragment>

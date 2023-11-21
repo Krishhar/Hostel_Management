@@ -3,64 +3,49 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/register.css';
 import axios from 'axios';
+import {MenuItem, TextField } from '@mui/material';
 
 const Register = () => {
-const [username, setUsername] = useState('');
-const [password, setPassword] = useState('');
-const [confirmPassword, setConfirmPassword] = useState('');
-const [email, setEmail] = useState('');
-const [Department, setDepartment] = useState('');
-const [hostel, setHostel] = useState('');
-const navigate = useNavigate()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [Department, setDepartment] = useState('');
+  const [hostel, setHostel] = useState('');
+  const [advisor, setAdvisor] = useState('');
+  const [phone, setPhone] = useState('');
+  const [Year, setYear] = useState('')
+  const navigate = useNavigate()
 
-useEffect(()=>{
-fetchusers()
-},[])
 
-const fetchusers = () =>{
-  axios
-  .get('http://localhost:3001/register')
-  .then((res)=>{
-    console.log(res.data)
-  })
-}
-
-const handleRegister = (event)=>{
-  event.preventDefault()    
-  axios.post('http://localhost:3001/register',{username,password,confirmPassword,email,Department,hostel})
-  .then(()=>{
-    setUsername('')
-    setEmail('')
-    setPassword('')
-    setConfirmPassword('')
-    setDepartment('')
-    setHostel('')
+  useEffect(() => {
     fetchusers()
-    navigate('/login')
-  })
-}
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
+  }, [])
 
-  //   if (name === 'username') {
-  //     setUsername(value);
-  //   } else if (name === 'password') {
-  //     setPassword(value);
-  //   }
-  //   else if (name === 'confirmPassword'){
-  //     setConfirmPassword(value)
-  //   }
-  //   else if (name === 'email'){
-  //     setEmail(value)
-  //   }
-  //   else if (name === 'Department'){
-  //     setDepartment(value)
-  //   }
-  //   else if (name === 'hostel'){
-  //     setHostel(value)
-  //   }
+  const fetchusers = () => {
+    axios
+      .get('http://localhost:3001/register')
+      .then((res) => {
+        console.log(res.data)
+      })
+  }
 
-  // };
+  const handleRegister = (event) => {
+    event.preventDefault()
+    axios.post('http://localhost:3001/register', { username, email, password, phone, advisor, Department, Year, hostel })
+      .then(() => {
+        setUsername('')
+        setEmail('')
+        setPassword('')
+        setPhone('')
+        setAdvisor('')
+        setDepartment('')
+        setYear('')
+        setHostel('')
+        fetchusers()
+        navigate('/login')
+      })
+  }
+
 
   useEffect(() => {
     // This code will run when the component mounts (similar to componentDidMount).
@@ -92,6 +77,7 @@ const handleRegister = (event)=>{
     };
   }, []); // The empty dependency array ensures this code runs once when the component mounts.
 
+
   return (
     <div className='root'>
       <div className="container">
@@ -103,43 +89,16 @@ const handleRegister = (event)=>{
                 <i className="fas fa-user"></i>
               </div>
               <div className="div">
-                <h5 className="h5">Username</h5>
+                <h5 className="h5">StudentName</h5>
                 <input
+                  required='true'
                   type="text"
                   className="input"
                   name="username"
+                  pattern='^[a-zA-Z ]+$'
+                  title='Only Letters'
                   value={username}
-                  onChange = {(e)=>setUsername(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="input-div pass">
-              <div className="i">
-                <i className="fas fa-lock"></i>
-              </div>
-              <div className="div">
-                <h5 className="h5">Password</h5>
-                <input
-                  type="password"
-                  className="input"
-                  name="password"
-                  value={password}
-                  onChange = {(e)=>setPassword(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="input-div pass">
-              <div className="i">
-                <i className="fas fa-lock"></i>
-              </div>
-              <div className="div">
-                <h5 className="h5">confirmPassword</h5>
-                <input
-                  type="password"
-                  className="input"
-                  name="confirmPassword"
-                  value={confirmPassword}
-                  onChange = {(e)=>setConfirmPassword(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
             </div>
@@ -150,14 +109,72 @@ const handleRegister = (event)=>{
               <div className="div">
                 <h5 className="h5">Email</h5>
                 <input
-                  type="text"
+                  required='true'
+                  type="email"
                   className="input"
                   name="email"
                   value={email}
-                  onChange = {(e)=>setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
             </div>
+            <div className="input-div pass">
+              <div className="i">
+                <i className="fas fa-lock"></i>
+              </div>
+              <div className="div">
+                <h5 className="h5">Password</h5>
+                <input
+                  required='true'
+                  type="password"
+                  className="input"
+                  name="password"
+                  minLength={6}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+            <br />
+            <div className="input-div one">
+              <div className="i">
+                <i className="fas fa-user"></i>
+              </div>
+              <div className="div">
+                <h5 className="h5">Phone No.</h5>
+                <input
+                  required='true'
+                  type="tel"
+                  className="input"
+                  name="phone"
+                  maxLength={10}
+                  pattern='[0-9]{10}'
+                  title='Only 10 Numbers'
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+
+              </div>
+            </div>
+            <div className="input-div one">
+              <div className="i">
+                <i className="fas fa-user"></i>
+              </div>
+              <div className="div">
+                <h5 className="h5">Advisor Name</h5>
+                <input
+                  required='true'
+                  type="text"
+                  className="input"
+                  name="advisor"
+                  pattern='^[a-zA-Z ]+$'
+                  title='Only Letters'
+                  value={advisor}
+                  onChange={(e) => setAdvisor(e.target.value)}
+                />
+              </div>
+            </div>
+
             <div className="input-div pass">
               <div className="i">
                 <i className="fas fa-lock"></i>
@@ -165,38 +182,42 @@ const handleRegister = (event)=>{
               <div className="div">
                 <h5 className="h5">Department</h5>
                 <input
+                  required='true'
                   type="text"
                   className="input"
                   name="Department"
                   value={Department}
-                  onChange = {(e)=>setDepartment(e.target.value)}
+                  pattern='^[a-zA-Z ]+$'
+                  title='Only Letters'
+                  onChange={(e) => setDepartment(e.target.value)}
                 />
               </div>
             </div>
-            <div className="input-div pass">
-              <div className="i">
-                <i className="fas fa-lock"></i>
-              </div>
-              <div className="div">
-                <h5 className="h5">Hostel</h5>
-                <input
-                  type="text"
-                  className="input"
-                  name="hostel"
-                  value={hostel}
-                  onChange = {(e)=>setHostel(e.target.value)}
-                />
-              </div>
-            </div>
-            <a href="#">Forgot Password?</a>
-            <input type="submit" className="btn" value="Login" />
-            <a href="/login">NEW Here, then Sign Up!</a>
+            <br />
+            <TextField label="Year" select value={Year} onChange={(e) => setYear(e.target.value)} fullWidth>
+              <MenuItem value='1'>I</MenuItem>
+              <MenuItem value='2'>II</MenuItem>
+              <MenuItem value='3'>III</MenuItem>
+              <MenuItem value='4'>IV</MenuItem>
+              <MenuItem value='5'>V</MenuItem>
+            </TextField>
+            <br />
+            <br />
+            <TextField label="Hostel" select value={hostel} onChange={(e) => setHostel(e.target.value)} fullWidth>
+              <MenuItem value='Bharathi'>Bharathi</MenuItem>
+              <MenuItem value='valluvar'>valluvar</MenuItem>
+              <MenuItem value='Sankar'>Sankar</MenuItem>
+              <MenuItem value='Dheeran'>Dheeran</MenuItem>
+              <MenuItem value='Kamban'>Kamban</MenuItem>
+            </TextField>
+            <br />
+            <br />
+            <input type="submit" className="btn" value="Register" />
+            <a href="/login">Already Registered, then Login</a>
           </form>
         </div>
       </div>
     </div>
   );
 };
-
-
 export default Register;
