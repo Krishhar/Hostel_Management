@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Info from './Info';
 import Review from './Review';
 import axios from 'axios';
+import html2pdf from 'html2pdf.js';
 
 const steps = ['Information', 'Review your Details'];
 
@@ -28,11 +29,41 @@ export default function Aform() {
     Room: '',
   });
 
+  const handleDownload = () => {
+    // Get the HTML content of the form
+    const formHtml = document.getElementById('f').innerHTML;
+
+    // Configuration for html2pdf
+    const pdfOptions = {
+      margin: 10,
+      filename: 'outpass_form.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    };
+
+    // Generate and download the PDF
+    html2pdf().from(formHtml).set(pdfOptions).outputPdf((pdf) => {
+      const blob = new Blob([pdf], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'outpass_form.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  };
+
   const validateFormData = (formData) => {
     return (
       formData.firstName !== '' &&
       formData.lastName !== '' &&
       formData.Department !== '' &&
+      formData.outpassFor !== '' &&
+      formData.sDate !== '' &&
+      formData.eDate !== '' &&
       formData.rollNo !== '' &&
       formData.Year !== '' &&
       formData.Hostel !== '' &&
@@ -133,6 +164,15 @@ export default function Aform() {
               <Typography variant="subtitle1">
                 Your Application is Submitted Successfully. You can View the Status of your Application in the Status Page. Have a Nice day
               </Typography>
+              <div sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Button
+                  variant="contained"
+                  onClick={handleDownload}
+                  sx={{ mt: 3, ml: 1 }}
+                >
+                  Download Form
+                </Button>
+              </div>
             </React.Fragment>
           ) : (
             <React.Fragment>

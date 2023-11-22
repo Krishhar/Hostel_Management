@@ -5,9 +5,10 @@ const Review = ({ formData }) => {
 
   return (
     <>
+    <div id='f'>
     <div style={{ margin: '10px',padding:'10px' }}>
       <h2>Review Your Details</h2>
-    </div>
+    </div >
       <p style={paragraphStyle}>First Name: {formData.firstName}</p>
       <p style={paragraphStyle}>Last Name: {formData.lastName}</p>
       <p style={paragraphStyle}>Selected Option: {formData.outpassFor}</p>
@@ -19,6 +20,7 @@ const Review = ({ formData }) => {
       <p style={paragraphStyle}>Hostel: {formData.Hostel}</p>
       <p style={paragraphStyle}>Room No: {formData.Room}</p>
       {/* Add other form fields as needed */}
+      </div>
     
     </>
   );

@@ -88,6 +88,33 @@ const Info = ({ onChange }) => {
 
     onChange({ [name]: value });
 
+    switch (name) {
+      case 'outpassFor':
+        setoutpassFor(value);
+        break;
+      case 'sDate':
+        setsDate(value);
+        break;
+      case 'eDate':
+        seteDate(value);
+        break;
+      case 'Dept':
+        setDept(value);
+        break;
+      case 'Year':
+        setYear(value);
+        break;
+      case 'Hostel':
+        setHostel(value);
+        break;
+      case 'Room':
+        setRoom(value);
+        break;
+      default:
+        break;
+    }
+  
+
     // Validate date for start and end date
     if (name === 'sDate' || name === 'eDate') {
       validateDate();
