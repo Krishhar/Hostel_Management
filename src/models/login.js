@@ -2,47 +2,50 @@ import React, { useState, useEffect } from 'react';
 import '../css/login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import 'react-hot-toast'
+import 'react-hot-toast';
 import toast from 'react-hot-toast';
+import { MenuItem, TextField } from '@mui/material';
 
 const LoginModal = () => {
-  const [user, setUsers] = useState([]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('student');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    Fetchusers();
-  }, []);
-
-  const Fetchusers = () => {
+  const fetchusers = (role) => {
     axios
-      .get('http://localhost:3001/register')
+      .get(`http://localhost:3001/register?role=${role}`)
       .then((res) => {
         console.log(res.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching users:', error);
       });
   };
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/login', { email, password });
+      const response = await axios.post('http://localhost:3001/login', { email, password, role });
       const token = response.data.token;
       toast.success('Login successful');
       setEmail('');
       setPassword('');
-      Fetchusers();
       navigate('/');
-      window.location.reload();
       localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
     } catch (error) {
       console.log('Login Error', error);
-      alert('invalid credentials')
+      toast.error('Invalid credentials');
     }
   };
+  
 
   useEffect(() => {
-    // This code will run when the component mounts (similar to componentDidMount).
+    fetchusers(role);
+  }, [role]);
+
+  useEffect(() => {
     const inputs = document.querySelectorAll(".input");
 
     function addcl() {
@@ -62,14 +65,19 @@ const LoginModal = () => {
       input.addEventListener("blur", remcl);
     });
 
-    // Cleanup function: Remove the event listeners when the component unmounts.
     return () => {
       inputs.forEach((input) => {
         input.removeEventListener("focus", addcl);
         input.removeEventListener("blur", remcl);
       });
     };
-  }, []); // The empty dependency array ensures this code runs once when the component mounts.
+  }, []);
+
+  const handleRoleChange = (event) => {
+    const selectedRole = event.target.value;
+    setRole(selectedRole);
+    fetchusers(selectedRole);
+  };
 
   return (
     <div className='root'>
@@ -77,6 +85,16 @@ const LoginModal = () => {
         <div className="login-content">
           <form onSubmit={handleLogin}>
             <h2 className="title1">Welcome</h2>
+            <br /><br />
+            <div className="div">
+              <TextField label="Role" select value={role} onChange={handleRoleChange} fullWidth>
+                <MenuItem value='student'>Student</MenuItem>
+                <MenuItem value='class Advisor'>Class Advisor</MenuItem>
+                <MenuItem value='deputy Warden'>Deputy Warden</MenuItem>
+              </TextField>
+              <br />
+              <br />
+            </div>
             <div className="input-div one">
               <div className="i">
                 <i className="fas fa-user"></i>
@@ -84,12 +102,12 @@ const LoginModal = () => {
               <div className="div">
                 <h5 className="h5">Email</h5>
                 <input
-                required = "true"
+                  required="true"
                   type="text"
                   className="input"
                   name="email"
                   value={email}
-                  onChange = {(e)=>setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
             </div>
@@ -100,17 +118,19 @@ const LoginModal = () => {
               <div className="div">
                 <h5 className="h5">Password</h5>
                 <input
-                required = "true"
+                  required="true"
                   type="password"
                   className="input"
                   name="password"
                   value={password}
-                  onChange = {(e)=>setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </div>
             <a href="#">Forgot Password?</a>
-            <button type="submit" className="btn">Login</button>
+            <button type="submit" className="btn">
+              Login
+            </button>
             <a href="/register">NEW Here, then Sign Up!</a>
           </form>
         </div>

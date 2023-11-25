@@ -4,8 +4,8 @@ const Review = ({ formData }) => {
   const paragraphStyle = { padding: '8px' };
 
   return (
-    <>
-    <div id='f'>
+    
+    <div id='download'>
     <div style={{ margin: '10px',padding:'10px' }}>
       <h2>Review Your Details</h2>
     </div >
@@ -22,7 +22,7 @@ const Review = ({ formData }) => {
       {/* Add other form fields as needed */}
       </div>
     
-    </>
+    
   );
 };
 

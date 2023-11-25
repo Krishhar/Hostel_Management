@@ -1,81 +1,111 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/register.css';
 import axios from 'axios';
-import {MenuItem, TextField } from '@mui/material';
+import { MenuItem, TextField } from '@mui/material';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [Department, setDepartment] = useState('');
+  const [department, setDepartment] = useState('');
   const [hostel, setHostel] = useState('');
   const [advisor, setAdvisor] = useState('');
   const [phone, setPhone] = useState('');
-  const [Year, setYear] = useState('')
-  const navigate = useNavigate()
+  const [Year, setYear] = useState('');
+  const [role, setRole] = useState('student'); // New state for role
+  const [rollNo, setRollNo] = useState(''); // New state for rollNo
+  const navigate = useNavigate();
 
-
-  useEffect(() => {
-    fetchusers()
-  }, [])
-
-  const fetchusers = () => {
+  const fetchusers = (role) => {
     axios
-      .get('http://localhost:3001/register')
+      .get(`http://localhost:3001/register?role=${role}`)
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
       })
-  }
+      .catch((error) => {
+        console.error('Error fetching users:', error);
+      });
+  };
 
-  const handleRegister = (event) => {
-    event.preventDefault()
-    axios.post('http://localhost:3001/register', { username, email, password, phone, advisor, Department, Year, hostel })
-      .then(() => {
-        setUsername('')
-        setEmail('')
-        setPassword('')
-        setPhone('')
-        setAdvisor('')
-        setDepartment('')
-        setYear('')
-        setHostel('')
-        fetchusers()
-        navigate('/login')
-      })
-  }
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    console.log('Role:', role);
+
+    const additionalInfo = {};
+    if (role === 'student' || role === 'classAdvisor') {
+      additionalInfo.department = department;
+    }
+    if (role === 'student') {
+      additionalInfo.Year = Year;
+      additionalInfo.rollNo = rollNo;
+    }
+
+    await axios.post(`http://localhost:3001/register?role=${role}`, {
+  username,
+  email,
+  password,
+  phone,
+  advisor,
+  hostel,
+  role,
+  ...additionalInfo,
+});
+
+
+    setUsername('');
+    setEmail('');
+    setPassword('');
+    setPhone('');
+    setAdvisor('');
+    setDepartment('');
+    setYear('');
+    setHostel('');
+    setRollNo('');
+    fetchusers(role); // Pass the role to the fetchusers function
+    navigate('/login');
+  };
 
 
   useEffect(() => {
-    // This code will run when the component mounts (similar to componentDidMount).
-    const inputs = document.querySelectorAll(".input");
+    const inputs = document.querySelectorAll('.input');
 
     function addcl() {
       let parent = this.parentNode.parentNode;
-      parent.classList.add("focus");
+      parent.classList.add('focus');
     }
 
     function remcl() {
       let parent = this.parentNode.parentNode;
-      if (this.value === "") {
-        parent.classList.remove("focus");
+      if (this.value === '') {
+        parent.classList.remove('focus');
       }
     }
 
     inputs.forEach((input) => {
-      input.addEventListener("focus", addcl);
-      input.addEventListener("blur", remcl);
+      input.addEventListener('focus', addcl);
+      input.addEventListener('blur', remcl);
     });
 
-    // Cleanup function: Remove the event listeners when the component unmounts.
     return () => {
       inputs.forEach((input) => {
-        input.removeEventListener("focus", addcl);
-        input.removeEventListener("blur", remcl);
+        input.removeEventListener('focus', addcl);
+        input.removeEventListener('blur', remcl);
       });
     };
-  }, []); // The empty dependency array ensures this code runs once when the component mounts.
+  }, []);
+
+  const handleRoleChange = (event) => {
+    const selectedRole = event.target.value;
+    setRole(selectedRole);
+    fetchusers(selectedRole); // Pass the selected role to fetchusers
+  };
+
+
+  useEffect(() => {
+    fetchusers(role);
+  }, [role]);
 
 
   return (
@@ -88,8 +118,9 @@ const Register = () => {
               <div className="i">
                 <i className="fas fa-user"></i>
               </div>
+
               <div className="div">
-                <h5 className="h5">StudentName</h5>
+                <h5 className="h5">Name</h5>
                 <input
                   required='true'
                   type="text"
@@ -102,6 +133,80 @@ const Register = () => {
                 />
               </div>
             </div>
+            <TextField label="Role" select value={role} onChange={handleRoleChange} fullWidth>
+              <MenuItem value='student'>Student</MenuItem>
+              <MenuItem value='classAdvisor'>Class Advisor</MenuItem>
+              <MenuItem value='deputyWarden'>Deputy Warden</MenuItem>
+            </TextField>
+            <br />
+            {(role === 'student' || role === 'deputyWarden') && (
+              <>
+                <br />
+                <TextField label="Hostel" select value={hostel} onChange={(e) => setHostel(e.target.value)} fullWidth>
+                  <MenuItem value='Bharathi'>Bharathi</MenuItem>
+                  <MenuItem value='valluvar'>valluvar</MenuItem>
+                  <MenuItem value='Sankar'>Sankar</MenuItem>
+                  <MenuItem value='Dheeran'>Dheeran</MenuItem>
+                  <MenuItem value='Kamban'>Kamban</MenuItem>
+                  <MenuItem value='ponnar'>Ponnar</MenuItem>
+                  <MenuItem value='ielango'>Ielango</MenuItem>
+                </TextField>
+                <br />
+              </>
+            )}
+            {role === 'student' && (
+              <>
+                <br />
+                <div className="input-div one">
+                  <div className="i">
+                    <i className="fas fa-user"></i>
+                  </div>
+                  <div className="div">
+                    <h5 className="h5">Roll No.</h5>
+                    <input
+                      required={role === 'student'} // Make it required only for students
+                      type="text"
+                      className="input"
+                      name="rollNo"
+                      pattern='^[a-zA-Z0-9]+$'
+                      title='Alphanumeric characters only'
+                      value={rollNo}
+                      onChange={(e) => setRollNo(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <br />
+                <TextField label="Year" select value={Year} onChange={(e) => setYear(e.target.value)} fullWidth>
+                  <MenuItem value='1'>I</MenuItem>
+                  <MenuItem value='2'>II</MenuItem>
+                  <MenuItem value='3'>III</MenuItem>
+                  <MenuItem value='4'>IV</MenuItem>
+                  <MenuItem value='5'>V</MenuItem>
+                </TextField>
+                <br />
+                <br />
+
+                <div className="input-div one">
+                  <div className="i">
+                    <i className="fas fa-user"></i>
+                  </div>
+                  <div className="div">
+                    <h5 className="h5">Advisor Name</h5>
+                    <input
+                      required='true'
+                      type="text"
+                      className="input"
+                      name="advisor"
+                      pattern='^[a-zA-Z ]+$'
+                      title='Only Letters'
+                      value={advisor}
+                      onChange={(e) => setAdvisor(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
             <div className="input-div pass">
               <div className="i">
                 <i className="fas fa-lock"></i>
@@ -153,63 +258,27 @@ const Register = () => {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
-
-              </div>
-            </div>
-            <div className="input-div one">
-              <div className="i">
-                <i className="fas fa-user"></i>
-              </div>
-              <div className="div">
-                <h5 className="h5">Advisor Name</h5>
-                <input
-                  required='true'
-                  type="text"
-                  className="input"
-                  name="advisor"
-                  pattern='^[a-zA-Z ]+$'
-                  title='Only Letters'
-                  value={advisor}
-                  onChange={(e) => setAdvisor(e.target.value)}
-                />
               </div>
             </div>
 
-            <div className="input-div pass">
-              <div className="i">
-                <i className="fas fa-lock"></i>
+
+            {/* Show Year and rollNo fields only if the role is 'student' */}
+
+
+            {role === 'student' || role === 'classAdvisor' ? (
+              <div>
+                <TextField label="department" select value={department} onChange={(e) => setDepartment(e.target.value)} fullWidth>
+                  <MenuItem value='MCA'>MCA</MenuItem>
+                  <MenuItem value='MBA'>MBA</MenuItem>
+                  <MenuItem value='AIDS'>AIDS</MenuItem>
+                  <MenuItem value='MECHANICAL ENGINEERING'>MECHANICAL</MenuItem>
+                  <MenuItem value='CIVIL ENGINEERING'>CIVIL</MenuItem>
+                </TextField>
               </div>
-              <div className="div">
-                <h5 className="h5">Department</h5>
-                <input
-                  required='true'
-                  type="text"
-                  className="input"
-                  name="Department"
-                  value={Department}
-                  pattern='^[a-zA-Z ]+$'
-                  title='Only Letters'
-                  onChange={(e) => setDepartment(e.target.value)}
-                />
-              </div>
-            </div>
+            ) : null}
+
             <br />
-            <TextField label="Year" select value={Year} onChange={(e) => setYear(e.target.value)} fullWidth>
-              <MenuItem value='1'>I</MenuItem>
-              <MenuItem value='2'>II</MenuItem>
-              <MenuItem value='3'>III</MenuItem>
-              <MenuItem value='4'>IV</MenuItem>
-              <MenuItem value='5'>V</MenuItem>
-            </TextField>
-            <br />
-            <br />
-            <TextField label="Hostel" select value={hostel} onChange={(e) => setHostel(e.target.value)} fullWidth>
-              <MenuItem value='Bharathi'>Bharathi</MenuItem>
-              <MenuItem value='valluvar'>valluvar</MenuItem>
-              <MenuItem value='Sankar'>Sankar</MenuItem>
-              <MenuItem value='Dheeran'>Dheeran</MenuItem>
-              <MenuItem value='Kamban'>Kamban</MenuItem>
-            </TextField>
+
             <br />
             <br />
             <input type="submit" className="btn" value="Register" />

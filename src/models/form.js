@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Info from './Info';
 import Review from './Review';
 import axios from 'axios';
+import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
 
 const steps = ['Information', 'Review your Details'];
@@ -30,31 +31,19 @@ export default function Aform() {
   });
 
   const handleDownload = () => {
-    // Get the HTML content of the form
-    const formHtml = document.getElementById('f').innerHTML;
+    console.log("clicked")
+    const formHtml = document.getElement('div');
 
-    // Configuration for html2pdf
-    const pdfOptions = {
-      margin: 10,
-      filename: 'outpass_form.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    };
+    if (formHtml) {
+      const pdf = new jsPDF();
+      pdf.text(20, 20, 'Outpass Form Review');
 
-    // Generate and download the PDF
-    html2pdf().from(formHtml).set(pdfOptions).outputPdf((pdf) => {
-      const blob = new Blob([pdf], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'outpass_form.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    });
+      pdf.fromHTML(formHtml, 20, 30, {}, () => {
+        pdf.save('outpass_form.pdf');
+      });
+    }
   };
+
 
   const validateFormData = (formData) => {
     return (

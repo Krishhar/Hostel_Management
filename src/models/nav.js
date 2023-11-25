@@ -21,25 +21,47 @@ const StyledLink = styled(NavLink)({
   }
 })
 
+// ... (imports remain the same)
+
 const Nav = () => {
-  const isUserSignedIn = !!localStorage.getItem('token')
-  const navigate = useNavigate()
+  const isUserSignedIn = !!localStorage.getItem('token');
+  const userRole = localStorage.getItem('role');
+  const navigate = useNavigate();
 
   const handleSignOut = () => {
-    localStorage.removeItem('token')
-    navigate('/login')
-  }
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   return (
     <AppBar position="sticky">
       <StyledToolbar>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: '30px', color: 'white' }}>
           {isUserSignedIn ? (
             <>
-              <StyledLink to='form'>Outpass</StyledLink>
-              <StyledLink to='dashboard'>Dashboard</StyledLink>
-              <StyledLink to='status'>Status</StyledLink>
+              {userRole === 'student' && (
+                <>
+                  <StyledLink to='form'>Outpass</StyledLink>
+                  <StyledLink to='dashboard'>Dashboard</StyledLink>
+                  <StyledLink to='status'>Status</StyledLink>
+                </>
+              )}
+              {userRole === 'advisor' && (
+                <>
+                  {/* Additional links for advisor */}
+                  <StyledLink to='advisor'>Advisor Dashboard</StyledLink>
+                  <StyledLink to='pending'>Pending Requests</StyledLink>
+                </>
+              )}
+              {userRole === 'deputyWarden' && (
+                <>
+                  {/* Additional links for deputy warden */}
+                  <StyledLink to='/DeputyWarden'>Deputy Warden Dashboard</StyledLink>
+                  <StyledLink to='pending'>Pending Requests</StyledLink>
+                </>
+              )}
               <StyledLink to='/'>Home</StyledLink>
-              <Button onClick={handleSignOut}>SignOut</Button>
+              <Button onClick={handleSignOut}>Sign Out</Button>
             </>
           ) : (
             <>
@@ -53,6 +75,6 @@ const Nav = () => {
       </StyledToolbar>
     </AppBar>
   );
-}
+};
 
 export default Nav;
