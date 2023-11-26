@@ -35,8 +35,7 @@ const LoginModal = () => {
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
     } catch (error) {
-      console.log('Login Error', error);
-      toast.error('Invalid credentials');
+      alert('Invalid credentials');
     }
   };
   
@@ -89,8 +88,8 @@ const LoginModal = () => {
             <div className="div">
               <TextField label="Role" select value={role} onChange={handleRoleChange} fullWidth>
                 <MenuItem value='student'>Student</MenuItem>
-                <MenuItem value='class Advisor'>Class Advisor</MenuItem>
-                <MenuItem value='deputy Warden'>Deputy Warden</MenuItem>
+                <MenuItem value='classAdvisor'>Class Advisor</MenuItem>
+                <MenuItem value='deputyWarden'>Deputy Warden</MenuItem>
               </TextField>
               <br />
               <br />

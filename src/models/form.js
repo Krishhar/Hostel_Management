@@ -31,18 +31,24 @@ export default function Aform() {
   });
 
   const handleDownload = () => {
-    console.log("clicked")
-    const formHtml = document.getElement('div');
-
+    const formHtml = document.getElementById('download');
+    console.log(formHtml)
+  
     if (formHtml) {
       const pdf = new jsPDF();
       pdf.text(20, 20, 'Outpass Form Review');
-
-      pdf.fromHTML(formHtml, 20, 30, {}, () => {
-        pdf.save('outpass_form.pdf');
-      });
+  
+      // Convert HTML content to PDF
+      html2pdf(formHtml, {
+        margin: 10,
+        filename: 'outpass_form.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      }).save();
     }
   };
+  
 
 
   const validateFormData = (formData) => {

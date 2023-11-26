@@ -1,5 +1,3 @@
-// AdvisorDashboard.jsx
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -7,49 +5,55 @@ const AdvisorDashboard = () => {
   const [applications, setApplications] = useState([]);
 
   useEffect(() => {
-    // Fetch outpass applications when the component mounts
-    fetchApplications();
+    // Fetch pending outpass applications for Advisor when the component mounts
+    fetchPendingApplications();
   }, []);
 
-  const fetchApplications = () => {
+  const fetchPendingApplications = () => {
     axios.get('http://localhost:3001/form')
       .then((response) => {
-        setApplications(response.data);
+        // Filter out the approved applications
+        const pendingApplications = response.data.filter(application => application.status !== 'approved');
+        setApplications(pendingApplications);
       })
       .catch((error) => {
         console.error('Error fetching applications:', error);
       });
   };
 
-  const handleAction = (applicationId, action) => {
+  const handleApprove = (applicationId) => {
     // Update the status of the outpass application on the server
-    axios.put(`http://localhost:3001/form/${applicationId}`, { status: action })
-      .then((response) => {
-        // If the action is 'accept', forward the application to the warden
-        if (action === 'approved') {
-          const studentHostel = response.data.Hostel; // Assuming Hostel is a field in your schema
-          forwardToWarden(applicationId, studentHostel);
-        }
-
+    axios.put(`http://localhost:3001/form/${applicationId}`, { 
+      classAdvisorApproval
+      : true })
+      .then(() => {
+        console.log('Application approved successfully');
         // Refresh the application list after taking action
-        fetchApplications();
+        fetchPendingApplications();
       })
       .catch((error) => {
         console.error('Error updating application status:', error);
       });
   };
 
-  const forwardToWarden = (applicationId, hostel) => {
-    // Implement logic to find the warden for the specified hostel and forward the application
-    // You may use another API endpoint like '/api/forward-to-warden'
-    // to handle the warden assignment and forwarding logic
-    axios.post(`http://localhost:3001/forward-to-warden`, { applicationId, hostel })
+  const handleReject = (applicationId) => {
+    // Update the status of the outpass application on the server
+    axios.put(`http://localhost:3001/form/${applicationId}`, { 
+      classAdvisorApproval
+      : false })
       .then(() => {
-        console.log('Application forwarded to warden successfully');
+        console.log('Application rejected successfully');
+        // Refresh the application list after taking action
+        fetchPendingApplications();
       })
       .catch((error) => {
-        console.error('Error forwarding application to warden:', error);
+        console.error('Error updating application status:', error);
       });
+  };
+
+  const redirectToHistory = () => {
+    // Redirect to the history page (replace '/history' with your actual route)
+    window.location.href = '/history';
   };
 
   return (
@@ -65,27 +69,31 @@ const AdvisorDashboard = () => {
             <div style={{ marginBottom: '20px' }}><strong>Status:</strong> {application.status}</div>
             <div style={{ marginTop: '10px' }}>
               <button
-                onClick={() => handleAction(application._id, 'approved')}
+                onClick={() => handleApprove(application._id)}
                 style={{
                   marginRight: '10px',
                   padding: '2px',
-                  width:'100px',
-                  height:'40px',
-                  fontSize:'15px',
+                  width: '100px',
+                  height: '40px',
+                  fontSize: '15px',
                   backgroundImage: 'linear-gradient(to right, #32be8f, #38d39f, #32be8f)',
                   backgroundSize: '200%',
                   color: '#fff',
                   fontFamily: "'Aref Ruqaa Ink', sans-serif",
                   cursor: 'pointer',
                   transition: '.5s'
-                }}>Accept</button>
-              <button onClick={() => handleAction(application._id, 'rejected')}
+                }}
+              >
+                Accept
+              </button>
+              <button
+                onClick={() => handleReject(application._id)}
                 style={{
                   marginRight: '10px',
-                  marginLeft:'10px',
-                  width:'100px',
-                  height:'40px',
-                  fontSize:'15px',
+                  marginLeft: '10px',
+                  width: '100px',
+                  height: '40px',
+                  fontSize: '15px',
                   padding: '2px',
                   backgroundImage: 'linear-gradient(to right, #bd1313,#bd1313,#bd1313)',
                   backgroundSize: '200%',
@@ -93,7 +101,27 @@ const AdvisorDashboard = () => {
                   fontFamily: "'Aref Ruqaa Ink', sans-serif",
                   cursor: 'pointer',
                   transition: '.5s',
-                }}>Reject</button>
+                }}
+              >
+                Reject
+              </button>
+              <button
+                onClick={() => redirectToHistory(application._id)}
+                style={{
+                  marginLeft: '10px',
+                  width: '100px',
+                  height: '40px',
+                  fontSize: '15px',
+                  padding: '2px',
+                  backgroundColor: '#007BFF',
+                  color: '#fff',
+                  fontFamily: "'Aref Ruqaa Ink', sans-serif",
+                  cursor: 'pointer',
+                  transition: '.5s',
+                }}
+              >
+                View History
+              </button>
             </div>
           </li>
         ))}

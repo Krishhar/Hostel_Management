@@ -21,7 +21,6 @@ const StyledLink = styled(NavLink)({
   }
 })
 
-// ... (imports remain the same)
 
 const Nav = () => {
   const isUserSignedIn = !!localStorage.getItem('token');
@@ -46,18 +45,18 @@ const Nav = () => {
                   <StyledLink to='status'>Status</StyledLink>
                 </>
               )}
-              {userRole === 'advisor' && (
+              {userRole === 'classAdvisor' && (
                 <>
-                  {/* Additional links for advisor */}
+                  {/* Additional links for class advisor */}
                   <StyledLink to='advisor'>Advisor Dashboard</StyledLink>
-                  <StyledLink to='pending'>Pending Requests</StyledLink>
+                  <StyledLink to='history'>History</StyledLink>
                 </>
               )}
               {userRole === 'deputyWarden' && (
                 <>
                   {/* Additional links for deputy warden */}
-                  <StyledLink to='/DeputyWarden'>Deputy Warden Dashboard</StyledLink>
-                  <StyledLink to='pending'>Pending Requests</StyledLink>
+                  <StyledLink to='/deputyWarden'>Deputy Warden Dashboard</StyledLink>
+                  <StyledLink to='history'>History</StyledLink>
                 </>
               )}
               <StyledLink to='/'>Home</StyledLink>

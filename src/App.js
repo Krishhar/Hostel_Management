@@ -9,6 +9,8 @@ import Register from './models/register';
 import { Box } from '@mui/material';
 import AdvisorDashboard from './models/AdvisorDashboard';
 import DeputyWardenDashboard from './models/DeputyWardenDashboard';
+import ClassAdvisorHistory from './models/ClassAdvisorHistory';
+import DeputyWardenHistory from './models/DeputyWardenHistory';
 
 
 function App() {
@@ -33,17 +35,19 @@ const router = createBrowserRouter(
       <Route path='status' element={<Status />} />
 
       {/* Routes for 'advisor' role */}
-      {localStorage.getItem('role') === 'class Advisor' && (
+      {localStorage.getItem('role') === 'classAdvisor' && (
         <>
-          <Route path='Advisor' element={<AdvisorDashboard />} />
+          <Route path='advisor' element={<AdvisorDashboard />} />
+          <Route path='history' element={<ClassAdvisorHistory/>}/>
           
         </>
       )}
 
       {/* Routes for 'deputyWarden' role */}
-      {localStorage.getItem('role') === 'deputy Warden' && (
+      {localStorage.getItem('role') === 'deputyWarden' && (
         <>
           <Route path='DeputyWarden' element={<DeputyWardenDashboard />} />
+          <Route path='history' element={<DeputyWardenHistory/>}/>
           
         </>
       )}
