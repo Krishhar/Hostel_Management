@@ -10,8 +10,8 @@ import Typography from '@mui/material/Typography';
 import Info from './Info';
 import Review from './Review';
 import axios from 'axios';
-import jsPDF from 'jspdf';
-import html2pdf from 'html2pdf.js';
+// import jsPDF from 'jspdf';
+// import html2pdf from 'html2pdf.js';
 
 const steps = ['Information', 'Review your Details'];
 
@@ -19,7 +19,7 @@ export default function Aform() {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
     firstName: '',
-    lastName: '',
+    email: '',
     outpassFor: '',
     sDate: '',
     eDate: '',
@@ -30,31 +30,31 @@ export default function Aform() {
     Room: '',
   });
 
-  const handleDownload = () => {
-    const formHtml = document.getElementById('download');
-    console.log(formHtml)
+  // const handleDownload = () => {
+  //   const formHtml = document.getElementById('download');
+  //   console.log(formHtml)
   
-    if (formHtml) {
-      const pdf = new jsPDF();
-      pdf.text(20, 20, 'Outpass Form Review');
+  //   if (formHtml) {
+  //     const pdf = new jsPDF();
+  //     pdf.text(20, 20, 'Outpass Form Review');
   
-      // Convert HTML content to PDF
-      html2pdf(formHtml, {
-        margin: 10,
-        filename: 'outpass_form.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      }).save();
-    }
-  };
+  //     // Convert HTML content to PDF
+  //     html2pdf(formHtml, {
+  //       margin: 10,
+  //       filename: 'outpass_form.pdf',
+  //       image: { type: 'jpeg', quality: 0.98 },
+  //       html2canvas: { scale: 2 },
+  //       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  //     }).save();
+  //   }
+  // };
   
 
 
   const validateFormData = (formData) => {
     return (
       formData.firstName !== '' &&
-      formData.lastName !== '' &&
+      formData.email !== '' &&
       formData.Department !== '' &&
       formData.outpassFor !== '' &&
       formData.sDate !== '' &&
@@ -66,17 +66,17 @@ export default function Aform() {
     );
   };
 
-  useEffect(() => {
-    fetchusers()
-  }, [])
+  // useEffect(() => {
+  //   fetchusers()
+  // }, [])
 
-  const fetchusers = () => {
-    axios
-      .get('http://localhost:3001/form')
-      .then((res) => {
-        console.log(res.data)
-      })
-  }
+  // const fetchusers = () => {
+  //   axios
+  //     .get('http://localhost:3001/form')
+  //     .then((res) => {
+  //       console.log(res.data)
+  //     })
+  // }
 
   const handleNext = () => {
     if (validateFormData(formData)) {
@@ -95,13 +95,15 @@ export default function Aform() {
 
   const handleForm = (event) => {
     event.preventDefault();
+  
+    // Assuming formData is defined somewhere in your component state
     axios
       .post('http://localhost:3001/form', formData)
       .then(() => {
         console.log('Form submitted successfully');
         setFormData({
           firstName: '',
-          lastName: '',
+          email: '',
           outpassFor: '',
           sDate: '',
           eDate: '',
@@ -116,10 +118,10 @@ export default function Aform() {
       .catch((error) => {
         console.error('Error submitting form:', error);
         alert('An error occurred while submitting the form. Please try again.');
-        console.log(error)
+        console.log(error);
       });
   };
-
+  
   const handleFormChange = (data) => {
     setFormData({ ...formData, ...data });
   };
@@ -159,7 +161,7 @@ export default function Aform() {
               <Typography variant="subtitle1">
                 Your Application is Submitted Successfully. You can View the Status of your Application in the Status Page. Have a Nice day
               </Typography>
-              <div sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {/* <div sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Button
                   variant="contained"
                   onClick={handleDownload}
@@ -167,7 +169,7 @@ export default function Aform() {
                 >
                   Download Form
                 </Button>
-              </div>
+              </div> */}
             </React.Fragment>
           ) : (
             <React.Fragment>

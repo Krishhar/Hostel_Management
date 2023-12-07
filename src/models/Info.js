@@ -7,11 +7,11 @@ import { MenuItem } from '@mui/material';
 
 const Info = ({ onChange }) => {
   const [firstName, setfirstName] = useState('');
-  const [lastName, setlastname] = useState('');
+  const [email, setEmail] = useState('');
   const [outpassFor, setoutpassFor] = useState('');
   const [sDate, setsDate] = useState('');
   const [eDate, seteDate] = useState('');
-  const [Dept, setDept] = useState('');
+  const [Department, setDepartment] = useState('');
   const [rollNo, setRollNo] = useState('');
   const [Year, setYear] = useState('');
   const [Hostel, setHostel] = useState('');
@@ -32,11 +32,11 @@ const Info = ({ onChange }) => {
     axios
       .post('http://localhost:3001/form', {
         firstName,
-        lastName,
+        email,
         outpassFor,
         sDate,
         eDate,
-        Dept,
+        Department,
         rollNo,
         Year,
         Hostel,
@@ -44,16 +44,15 @@ const Info = ({ onChange }) => {
       })
       .then(() => {
         setfirstName('');
-        setlastname('');
+        setEmail('');
         setoutpassFor('');
         setsDate('');
         seteDate('');
-        setDept('');
+        setDepartment('');
         setRollNo('');
         setYear('');
         setHostel('');
         setRoom('');
-        fetchusers();
       });
   };
 
@@ -67,7 +66,6 @@ const Info = ({ onChange }) => {
 
   const [errors, setErrors] = React.useState({
     firstName: '',
-    lastName: '',
     Year: '',
     // Add more fields as needed
   });
@@ -77,7 +75,7 @@ const Info = ({ onChange }) => {
 
     // Basic validation checks
     let error = '';
-    if (name === 'firstName' || name === 'lastName' || name === 'Department' || name === 'Room') {
+    if (name === 'firstName' || name === 'email' || name === 'Department' || name === 'Room') {
       error = value.trim() === '' ? 'This field is required' : '';
     }
 
@@ -98,8 +96,8 @@ const Info = ({ onChange }) => {
       case 'eDate':
         seteDate(value);
         break;
-      case 'Dept':
-        setDept(value);
+      case 'Department':
+        setDepartment(value);
         break;
       case 'Year':
         setYear(value);
@@ -154,7 +152,7 @@ const Info = ({ onChange }) => {
             required="true"
             id="firstName"
             name="firstName"
-            label="First name"
+            label="Name"
             fullWidth
             autoComplete="given-name"
             variant="standard"
@@ -166,15 +164,14 @@ const Info = ({ onChange }) => {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="lastName"
-            name="lastName"
-            label="Last name"
+            type='email'
+            id="email"
+            name="email"
+            label="Email"
             fullWidth
             autoComplete="family-name"
             variant="standard"
             onChange={handleInputChange}
-            error={Boolean(errors.lastName)}
-            helperText={errors.lastName}
           />
         </Grid>
         <Grid item xs={12}>
@@ -225,15 +222,13 @@ const Info = ({ onChange }) => {
 
         </Grid>
         <Grid item xs={12}>
-          <TextField
-            required
-            id="Dept"
-            name="Department"
-            label="Department"
-            fullWidth
-            variant="standard"
-            onChange={handleInputChange}
-          />
+          <TextField label="Department" id='Department' name='Department' select value={Department} onChange={handleInputChange} fullWidth>
+          <MenuItem value='MCA'>MCA</MenuItem>
+          <MenuItem value='MBA'>MBA</MenuItem>
+          <MenuItem value='AIDS'>AIDS</MenuItem>
+          <MenuItem value='MECHANICAL ENGINEERING'>MECHANICAL</MenuItem>
+          <MenuItem value='CIVIL ENGINEERING'>CIVIL</MenuItem>
+        </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
         <TextField label="Year" id='Year' name='Year' select value={Year} onChange={handleInputChange} fullWidth>

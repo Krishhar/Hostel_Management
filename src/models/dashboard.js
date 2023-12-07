@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
+      <Grid sx={{backgroundColor:'rgba(31, 38, 46, 0.5)'}} item xs={12}>
         <Calen/>
      </Grid>
       <Grid item xs={6}>

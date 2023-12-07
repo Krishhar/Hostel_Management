@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import '../css/login.css';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Button, TextField, MenuItem, Typography, Container, CssBaseline, Paper, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import 'react-hot-toast';
 import toast from 'react-hot-toast';
-import { MenuItem, TextField } from '@mui/material';
+import axios from 'axios';
 
 const LoginModal = () => {
   const [email, setEmail] = useState('');
@@ -78,63 +77,54 @@ const LoginModal = () => {
     fetchusers(selectedRole);
   };
 
+
   return (
-    <div className='root'>
-      <div className="container">
-        <div className="login-content">
-          <form onSubmit={handleLogin}>
-            <h2 className="title1">Welcome</h2>
-            <br /><br />
-            <div className="div">
-              <TextField label="Role" select value={role} onChange={handleRoleChange} fullWidth>
-                <MenuItem value='student'>Student</MenuItem>
-                <MenuItem value='classAdvisor'>Class Advisor</MenuItem>
-                <MenuItem value='deputyWarden'>Deputy Warden</MenuItem>
-              </TextField>
-              <br />
-              <br />
-            </div>
-            <div className="input-div one">
-              <div className="i">
-                <i className="fas fa-user"></i>
-              </div>
-              <div className="div">
-                <h5 className="h5">Email</h5>
-                <input
-                  required="true"
-                  type="text"
-                  className="input"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className="input-div pass">
-              <div className="i">
-                <i className="fas fa-lock"></i>
-              </div>
-              <div className="div">
-                <h5 className="h5">Password</h5>
-                <input
-                  required="true"
-                  type="password"
-                  className="input"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-            </div>
-            <a href="#">Forgot Password?</a>
-            <button type="submit" className="btn">
-              Login
-            </button>
-            <a href="/register">NEW Here, then Sign Up!</a>
-          </form>
-        </div>
-      </div>
-    </div>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Paper elevation={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 3, borderRadius: '10px' }}>
+        <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
+          Welcome
+        </Typography>
+        <TextField
+          label="Role"
+          select
+          fullWidth
+          value={role}
+          onChange={handleRoleChange}
+          sx={{ mb: 2 }}
+        >
+          <MenuItem value="student">Student</MenuItem>
+          <MenuItem value="classAdvisor">Class Advisor</MenuItem>
+          <MenuItem value="deputyWarden">Deputy Warden</MenuItem>
+        </TextField>
+        <TextField
+          required
+          type="text"
+          label="Email"
+          fullWidth
+          margin="normal"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          required
+          type="password"
+          label="Password"
+          fullWidth
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <Button type="button" variant="contained" fullWidth onClick={handleLogin} sx={{ mb: 2 }}>
+          Login
+        </Button>
+        <Link href="/register" variant="body2">
+          {"Don't have an account? Sign Up"}
+        </Link>
+      </Paper>
+    </Container>
   );
 };
 

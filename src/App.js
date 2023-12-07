@@ -16,7 +16,7 @@ import DeputyWardenHistory from './models/DeputyWardenHistory';
 function App() {
   // Remove the definition of isUserSignedIn from here
   return (
-    <Box sx={{backgroundColor:'rgba(31, 38, 46, 0.5)'}}>
+    <Box>
       <router>
         <RouterProvider router={router}/>
       </router>
@@ -59,4 +59,3 @@ const router = createBrowserRouter(
 );
 
 export default App;
-
