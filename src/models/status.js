@@ -1,146 +1,126 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-// const StatusPage = () => {
-//   const [status, setStatus] = useState({});
-//   const [downloadEnabled, setDownloadEnabled] = useState(false);
+const StatusPage = () => {
+  const [userDetails, setUserDetails] = useState({});
+  const [status, setStatus] = useState({});
+  const [Requests, setRequests] = useState([]);
+  const [downloadEnabled, setDownloadEnabled] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-//   useEffect(() => {
-//     // Fetch status from the server (replace 'your-api-endpoint' with the actual endpoint)
-//     axios.get('/http://localhost:3000//form')
-//       .then(response => {
-//         setStatus(response.data); // Assuming your API response has a status field
-//         updateDownloadButton(response.data);
-//       })
-//       .catch(error => {
-//         console.error('Error fetching status:', error);
-//       });
-//   }, []); // Empty dependency array to run the effect only once on component mount
+  const storedEmail = localStorage.getItem('email');
 
-//   const updateDownloadButton = (statusData) => {
-//     // Check conditions for enabling the download button
-//     if (statusData.advisorApproval && statusData.deputyApproval) {
-//       setDownloadEnabled(true);
-//     }
-//   };
+  const fetchRequests = async () => {
+    try {
+      // Fetch email from localStorage
+      const storedEmail = localStorage.getItem('email');
 
-//   const handleDownload = () => {
-//     // Implement the logic to download the outpass (replace 'your-download-endpoint' with the actual endpoint)
-//     axios.get('/your-download-endpoint', { responseType: 'blob' })
-//       .then(response => {
-//         const url = window.URL.createObjectURL(new Blob([response.data]));
-//         const a = document.createElement('a');
-//         a.href = url;
-//         a.download = 'outpass.pdf'; // Specify the desired filename
-//         document.body.appendChild(a);
-//         a.click();
-//         document.body.removeChild(a);
-//       })
-//       .catch(error => {
-//         console.error('Error downloading outpass:', error);
-//       });
-//   };
+      // Check if email is not empty
+      if (storedEmail && storedEmail.trim() !== '') {
+        // Make the axios request with the fetched email
+        const response = await axios.get('http://localhost:3001/form', {
+          params: {
+            email: storedEmail,
+          },
+        });
 
-//   return (
-//     <div>
-//       <h1>Outpass Application Status</h1>
-//       <div>
-//         <p>Advisor Approval: {status.advisorApproval ? 'Approved' : 'Pending'}</p>
-//         <p>Deputy Warden Approval: {status.deputyApproval ? 'Approved' : 'Pending'}</p>
-//       </div>
-//       <div>
-//         {downloadEnabled && (
-//           <button onClick={handleDownload} disabled={!downloadEnabled}>
-//             Download Outpass
-//           </button>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
+        console.log(response.data);
 
-// export default StatusPage;
-import React, { useRef } from 'react';
-import { Typography, Container, CssBaseline, Paper, Button } from '@mui/material';
-import html2pdf from 'html2pdf.js';
+        const formData = response.data;
+        setRequests(formData); // Assuming formData is an array of requests
 
-// StatusPage component with dummy data
-function StatusPage() {
-  // Dummy data
-  const dummyData = {
-    name: 'Hari Krishnan',
-    rollNumber: '23Mcr029',
-    departureDateTime: '2023-12-31T12:00',
-    reason: 'Going home for the weekend',
-    expectedReturnTime: '2024-1-4',
+        if (formData && Array.isArray(formData)) {
+          const filteredRequests = formData.filter(
+            (request) => request.email === storedEmail && (request.status === 'approved' || request.status === 'rejected')
+          );
+
+          setRequests(filteredRequests);
+        } else {
+          console.error('Invalid or missing data structure in API response.');
+          setError('Invalid or missing data structure in API response.');
+        }
+      } else {
+        console.log('Email is empty, not making the request.');
+        setError('Email is empty, not making the request.');
+      }
+    } catch (error) {
+      console.error('Error fetching form data:', error);
+      setError('Error fetching form data.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Accessing dummy data
-  const name = dummyData.name;
-  const rollNumber = dummyData.rollNumber;
-  const departureDateTime = dummyData.departureDateTime;
-  const reason = dummyData.reason;
-  const expectedReturnTime = dummyData.expectedReturnTime;
-
-  // Ref for the paper element
-  const componentRef = useRef();
-
-  // Function to handle download
-  const handleDownload = () => {
-    const content = componentRef.current;
-
-    // Configure the PDF options
-    const pdfOptions = {
-      margin: 10,
-      filename: 'outpass_status.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchRequests();
     };
 
-    // Generate PDF
-    html2pdf().from(content).set(pdfOptions).save();
+    fetchData();
+  }, [storedEmail]); // Include storedEmail in the dependency array to re-run the effect when it changes
+
+  useEffect(() => {
+    // Assuming you want to set userDetails based on the first request in the filteredRequests array
+    if (Requests.length > 0) {
+      setUserDetails(Requests[0]);
+      // Update download button status based on the fetched statusData
+      updateDownloadButton(Requests[0]);
+    }
+  }, [Requests]);
+
+  const updateDownloadButton = (statusData) => {
+    // Check conditions for enabling the download button
+    if (statusData.advisorApproval && statusData.deputyApproval) {
+      setDownloadEnabled(true);
+    }
   };
 
+  const handleDownload = () => {
+    // Implement the logic to download the outpass
+    // Replace 'your-download-endpoint' with the actual endpoint
+    axios.get('/download', { responseType: 'blob' })
+      .then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'outpass.pdf'; // Specify the desired filename
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      })
+      .catch(error => {
+        console.error('Error downloading outpass:', error);
+        setError('Error downloading outpass.');
+      });
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Paper ref={componentRef} elevation={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 3, borderRadius: '10px', backgroundColor: '#f0f0f0' }}>
-        <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-          Outpass Status
-        </Typography>
-
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="name">Student Name:</label>
-          <Typography variant="body1">{name}</Typography>
-        </div>
-
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="rollNumber">Roll Number:</label>
-          <Typography variant="body1">{rollNumber}</Typography>
-        </div>
-
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="departureDateTime">Departure Date and Time:</label>
-          <Typography variant="body1">{departureDateTime}</Typography>
-        </div>
-
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="reason">Reason for Leaving:</label>
-          <Typography variant="body1">{reason}</Typography>
-        </div>
-
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="expectedReturnTime">Expected Return Time:</label>
-          <Typography variant="body1">{expectedReturnTime}</Typography>
-        </div>
-
-        <Button variant="contained" fullWidth sx={{ mb: 2 }} onClick={handleDownload}>
-          Download Status (PDF)
-        </Button>
-      </Paper>
-    </Container>
+    <div>
+      <h1>Outpass Application Status</h1>
+      <div>
+        <p>Advisor Approval: {userDetails.classAdvisorApproval? 'Approved' : 'Pending'}</p>
+        <p>Deputy Warden Approval: {userDetails.deputyWardenApproval ? 'Approved' : 'Pending'}</p>
+        <p>Email: {storedEmail}</p>
+        <p>Name: {userDetails.firstName}</p>
+      </div>
+      <div>
+        {downloadEnabled && (
+          <button onClick={handleDownload} disabled={!downloadEnabled}>
+            Download Outpass
+          </button>
+        )}
+      </div>
+    </div>
   );
-}
+};
 
 export default StatusPage;

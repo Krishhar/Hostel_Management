@@ -8,22 +8,35 @@
   .month {
     padding: 3px;
     width: auto;
+    color: rgb(36, 22, 5);
     
   }
-  
-  .days-container {
-    padding: 15px;
-    display: grid;
-    grid-template-columns: repeat(7, 22px);
-    gap: 4px;
-  }
+
+  /* Add this style to your CSS */
+.weekdays-row {
+  display: grid;
+  grid-template-columns: repeat(7, 22px);
+  gap: 4px;
+  font-size: small;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #bef67f;
+}
+
+/* Modify the .days-container style */
+.days-container {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(7, 22px);
+  gap: 4px;
+}
   
   .day {
     text-align: center;
     padding: 5px;
     background-color: #f0f0f0;
     border-radius: 10px;
-    font-size: xx-small;
+    font-size: smaller;
   }
   
   .sunday {

@@ -5,6 +5,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { MenuItem } from '@mui/material';
 
+
 const Info = ({ onChange }) => {
   const [firstName, setfirstName] = useState('');
   const [email, setEmail] = useState('');
@@ -111,7 +112,7 @@ const Info = ({ onChange }) => {
       default:
         break;
     }
-  
+
 
     // Validate date for start and end date
     if (name === 'sDate' || name === 'eDate') {
@@ -141,8 +142,19 @@ const Info = ({ onChange }) => {
       document.getElementById('eDate').value = startDate;
     }
   };
+
+  useEffect(() => {
+    document.body.classList.add('fbg');
+    return () => {
+      document.body.classList.remove('fbg');
+    };
+  }, []);
+
+
   return (
+
     <React.Fragment>
+
       <Typography variant="h6" gutterBottom>
         Outpass form
       </Typography>
@@ -218,26 +230,26 @@ const Info = ({ onChange }) => {
             min={getToday()}
             fullWidth
           />
-        
+
 
         </Grid>
         <Grid item xs={12}>
           <TextField label="Department" id='Department' name='Department' select value={Department} onChange={handleInputChange} fullWidth>
-          <MenuItem value='MCA'>MCA</MenuItem>
-          <MenuItem value='MBA'>MBA</MenuItem>
-          <MenuItem value='AIDS'>AIDS</MenuItem>
-          <MenuItem value='MECHANICAL ENGINEERING'>MECHANICAL</MenuItem>
-          <MenuItem value='CIVIL ENGINEERING'>CIVIL</MenuItem>
-        </TextField>
+            <MenuItem value='MCA'>MCA</MenuItem>
+            <MenuItem value='MBA'>MBA</MenuItem>
+            <MenuItem value='AIDS'>AIDS</MenuItem>
+            <MenuItem value='MECHANICAL ENGINEERING'>MECHANICAL</MenuItem>
+            <MenuItem value='CIVIL ENGINEERING'>CIVIL</MenuItem>
+          </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
-        <TextField label="Year" id='Year' name='Year' select value={Year} onChange={handleInputChange} fullWidth>
-              <MenuItem value='1'>I</MenuItem>
-              <MenuItem value='2'>II</MenuItem>
-              <MenuItem value='3'>III</MenuItem>
-              <MenuItem value='4'>IV</MenuItem>
-              <MenuItem value='5'>V</MenuItem>
-            </TextField>
+          <TextField label="Year" id='Year' name='Year' select value={Year} onChange={handleInputChange} fullWidth>
+            <MenuItem value='1'>I</MenuItem>
+            <MenuItem value='2'>II</MenuItem>
+            <MenuItem value='3'>III</MenuItem>
+            <MenuItem value='4'>IV</MenuItem>
+            <MenuItem value='5'>V</MenuItem>
+          </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -251,13 +263,13 @@ const Info = ({ onChange }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-        <TextField label="Hostel" id='Hostel' name='Hostel' select value={Hostel} onChange={handleInputChange} fullWidth>
-              <MenuItem value='Bharathi'>Bharathi</MenuItem>
-              <MenuItem value='valluvar'>valluvar</MenuItem>
-              <MenuItem value='Sankar'>Sankar</MenuItem>
-              <MenuItem value='Dheeran'>Dheeran</MenuItem>
-              <MenuItem value='Kamban'>Kamban</MenuItem>
-            </TextField>
+          <TextField label="Hostel" id='Hostel' name='Hostel' select value={Hostel} onChange={handleInputChange} fullWidth>
+            <MenuItem value='Bharathi'>Bharathi</MenuItem>
+            <MenuItem value='valluvar'>valluvar</MenuItem>
+            <MenuItem value='Sankar'>Sankar</MenuItem>
+            <MenuItem value='Dheeran'>Dheeran</MenuItem>
+            <MenuItem value='Kamban'>Kamban</MenuItem>
+          </TextField>
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -273,8 +285,7 @@ const Info = ({ onChange }) => {
 
       </Grid>
 
-    </React.Fragment>
-  );
+    </React.Fragment>);
 }
 
 export default Info;

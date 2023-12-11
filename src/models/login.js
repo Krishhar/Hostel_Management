@@ -4,12 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import 'react-hot-toast';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import "../index.css"
 
 const LoginModal = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('student');
   const navigate = useNavigate();
+
+  const win = window.sessionStorage;
 
   const fetchusers = (role) => {
     axios
@@ -33,15 +36,29 @@ const LoginModal = () => {
       navigate('/');
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
+      localStorage.setItem('email',email)
     } catch (error) {
       alert('Invalid credentials');
     }
   };
   
+  useEffect(() => {
+    document.body.classList.add('rbb');
+    return () => {
+      document.body.classList.remove('rbb');
+    };
+  }, []);
 
   useEffect(() => {
-    fetchusers(role);
-  }, [role]);
+    if(win.getItem('email'))
+    setEmail(win.getItem('email'))
+
+  }, [win,email]);
+
+  useEffect(() => {
+    win.getItem('email',email)
+        fetchusers(role);
+  }, [role,email,win]);
 
   useEffect(() => {
     const inputs = document.querySelectorAll(".input");
@@ -79,12 +96,13 @@ const LoginModal = () => {
 
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Paper elevation={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 3, borderRadius: '10px' }}>
-        <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-          Welcome
+    <Container>
+      <Paper elevation={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 3, borderRadius: '10px',position:'absolute', top:"250px",
+    width:'300px',left:"40%" }}>
+        <Typography component="h1" variant="h4" sx={{ mb: 2, fontFamily:"inherit" }}>
+          Login
         </Typography>
+        <br/>
         <TextField
           label="Role"
           select

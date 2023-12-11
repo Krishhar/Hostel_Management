@@ -5,7 +5,8 @@ const theme = createTheme ({
         primary:{
             main:'#32be9f'
         }
-    }
+    },
+    
 })
 
 export default theme

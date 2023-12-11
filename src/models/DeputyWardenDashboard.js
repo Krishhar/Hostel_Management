@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import imge from "../css/k.png"
 
 const DeputyWardenDashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -23,27 +24,30 @@ const DeputyWardenDashboard = () => {
 
   const handleApprove = (applicationId) => {
     // Update the status of the outpass application on the server
-    axios.put(`http://localhost:3001/form/${applicationId}`, { 
-      deputyWardenApproval
-      : true })
+    axios.put(`http://localhost:3001/form/${applicationId}`, {
+      deputyWardenApproval: true,
+    })
       .then(() => {
         console.log('Application approved successfully');
-        // Refresh the application list after taking action
+        document.getElementById(`acc_${applicationId}`).innerHTML = "Accepted";
+        document.getElementById(`rej_${applicationId}`).innerHTML = "Reject";
         fetchPendingApplications();
       })
       .catch((error) => {
         console.error('Error updating application status:', error);
       });
   };
+  
 
   const handleReject = (applicationId) => {
     // Update the status of the outpass application on the server
-    axios.put(`http://localhost:3001/form/${applicationId}`, { 
-      deputyWardenApproval
-      : false })
+    axios.put(`http://localhost:3001/form/${applicationId}`, {
+      deputyWardenApproval: false,
+    })
       .then(() => {
         console.log('Application rejected successfully');
-        // Refresh the application list after taking action
+        document.getElementById(`rej_${applicationId}`).innerHTML = "Rejected";
+        document.getElementById(`acc_${applicationId}`).innerHTML = "Accept";
         fetchPendingApplications();
       })
       .catch((error) => {
@@ -56,19 +60,41 @@ const DeputyWardenDashboard = () => {
     window.location.href = '/history';
   };
 
+  useEffect(() => {
+    document.body.classList.add('cbg');
+    return () => {
+      document.body.classList.remove('cbg');
+    };
+  }, []);
+
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>DeputyWarden Dashboard</h1><br /><br />
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {applications.map((application) => (
-          <li key={application._id} style={{ backgroundColor: 'white', marginBottom: '20px', padding: '20px', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+      <h1 style={{ textAlign: 'center' }}>Advisor Dashboard</h1><br /><br />
+      <ul style={{ listStyle: 'none', padding: 0 , textAlign: 'center'}}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '5px',marginBottom:"20px", background: "linear-gradient( 135deg, #FFA8A8 10%, #FCFF00 100%)",}}><br/>
+            <div style={{ width: '100px', height: '105px', borderRadius: '50%', overflow: 'hidden',display:"flex" }}>
+              <img src={`${imge}`} alt="College Logo" style={{ width: '100%', height: '100%', objectFit: 'cover', padding: "1px" }} />
+            </div>
+            </div>
+        {applications.map((application, index) => (
+          <li
+            key={application._id}
+            className={index % 2 === 0 ? 'even-row' : 'odd-row'}
+            style={{
+              marginBottom: '20px',
+              padding: '20px',
+              borderRadius: '8px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
+              ,border: "5px solid goldenrod"
+            }}>
+
             <div style={{ marginBottom: '20px' }}><strong>Student:</strong> {application.firstName} {application.lastName}</div>
             <div style={{ marginBottom: '20px' }}><strong>Start Date:</strong> {application.sDate}</div>
             <div style={{ marginBottom: '20px' }}><strong>End Date:</strong> {application.eDate}</div>
             <div style={{ marginBottom: '20px' }}><strong>Reason:</strong> {application.outpassFor}</div>
             <div style={{ marginBottom: '20px' }}><strong>Status:</strong> {application.status}</div>
             <div style={{ marginTop: '10px' }}>
-              <button
+              <button id={`acc_${application._id}`}
                 onClick={() => handleApprove(application._id)}
                 style={{
                   marginRight: '10px',
@@ -87,6 +113,7 @@ const DeputyWardenDashboard = () => {
                 Accept
               </button>
               <button
+              id={`rej_${application._id}`}
                 onClick={() => handleReject(application._id)}
                 style={{
                   marginRight: '10px',
@@ -129,5 +156,6 @@ const DeputyWardenDashboard = () => {
     </div>
   );
 };
+
 
 export default DeputyWardenDashboard;

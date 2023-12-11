@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { TextField, MenuItem, Button, Typography, Container, CssBaseline, Paper } from '@mui/material';
+import { TextField, MenuItem, Button, Typography, Paper, CssBaseline } from '@mui/material';
+import { makeStyles, Container } from '@mui/material';
 import axios from 'axios';
+import styled from '@emotion/styled';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -22,6 +24,15 @@ const Register = () => {
   const isNumeric = (value) => /^\d+$/.test(value);
   const isEmailValid = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
+  
+
+  useEffect(() => {
+    document.body.classList.add('lg');
+    return () => {
+      document.body.classList.remove('lg');
+    };
+  }, []);
+
   // Validation logic for each field
   const isUsernameValid = isAlphabetsOnly(username);
   const isPasswordValid = password.length >= 6;
@@ -37,6 +48,7 @@ const Register = () => {
     isEmailValidValue &&
     isPhoneValid;
 
+    
   const fetchusers = (role) => {
     axios
       .get(`http://localhost:3001/register?role=${role}`)
@@ -99,6 +111,13 @@ const Register = () => {
     setRole(selectedRole);
     fetchusers(selectedRole);
   };
+  
+  useEffect(() => {
+    document.body.classList.add('lbb');
+    return () => {
+      document.body.classList.remove('lbb');
+    };
+  }, []);
 
   useEffect(() => {
     fetchusers(role);
@@ -124,6 +143,8 @@ const Register = () => {
       input.addEventListener('blur', remcl);
     });
 
+    
+
     return () => {
       inputs.forEach((input) => {
         input.removeEventListener('focus', addcl);
@@ -132,12 +153,15 @@ const Register = () => {
     };
   }, []);
 
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Paper elevation={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 3, borderRadius: '10px' }}>
+    <Container>
+      <br/>
+      <br/>
+      <Paper elevation={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 3, borderRadius: '10px',width:"50%",position:"relative"
+    ,left:"27%"  }}>
         <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-          Welcome
+          Online Outpass registration Page
         </Typography>
 
         <TextField
@@ -286,7 +310,7 @@ const Register = () => {
           Already Registered? Login
         </Link>
       </Paper>
-    </Container>
+      </Container>
   );
 };
 

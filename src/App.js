@@ -6,7 +6,6 @@ import Status from './models/status';
 import Aform from './models/form';
 import Dashboard from './models/dashboard';
 import Register from './models/register';
-import { Box } from '@mui/material';
 import AdvisorDashboard from './models/AdvisorDashboard';
 import DeputyWardenDashboard from './models/DeputyWardenDashboard';
 import ClassAdvisorHistory from './models/ClassAdvisorHistory';
@@ -16,18 +15,16 @@ import DeputyWardenHistory from './models/DeputyWardenHistory';
 function App() {
   // Remove the definition of isUserSignedIn from here
   return (
-    <Box>
       <router>
         <RouterProvider router={router}/>
       </router>
-    </Box>
   );
 }
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Rootlayout />}>
-      <Route index element={<Home />} />
+    <Route index element={<Home />} />
 
       {/* Common routes for all users */}
       <Route path='form' element={<Aform />} />
@@ -46,12 +43,12 @@ const router = createBrowserRouter(
       {/* Routes for 'deputyWarden' role */}
       {localStorage.getItem('role') === 'deputyWarden' && (
         <>
+           
           <Route path='DeputyWarden' element={<DeputyWardenDashboard />} />
           <Route path='history' element={<DeputyWardenHistory/>}/>
           
         </>
       )}
-
       <Route path='login' element={<Login />} />
       <Route path='register' element={<Register />} />
     </Route>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
 import { Button } from '@mui/material';
@@ -24,6 +24,14 @@ const Review = ({ formData }) => {
       }).save();
     }
   };
+
+  useEffect(() => {
+    document.body.classList.add('revbg');
+    return () => {
+      document.body.classList.remove('revbg');
+    };
+  }, []);
+
   return (
 
     <>
@@ -31,7 +39,7 @@ const Review = ({ formData }) => {
         <h2>Review Your Details</h2>
         <div id='download'>
           <p style={paragraphStyle}>First Name: {formData.firstName}</p>
-          <p style={paragraphStyle}>Email: {formData.email}</p>
+          <p style={paragraphStyle}>Email: {localStorage.getItem('email')}</p>
           <p style={paragraphStyle}>Selected Option: {formData.outpassFor}</p>
           <p style={paragraphStyle}>Starting Date: {formData.sDate}</p>
           <p style={paragraphStyle}>Ending Date Date: {formData.eDate}</p>
