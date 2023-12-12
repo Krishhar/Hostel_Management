@@ -142,8 +142,8 @@ export default function Aform() {
 
     <>
 
-      <Container component="main" maxWidth="sm" sx={{ mb: 4,  }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, borderRadius: '10px' }}>
+      <Container component="main" maxWidth="md" sx={{ mb: 4 , }}>
+        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, borderRadius: '10px', border:"7px groove #00719079" }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', background: "linear-gradient( 135deg, #FFA8A8 10%, #FCFF00 100%)" }}>
             <div style={{ width: '100px', height: '105px', borderRadius: '50%', overflow: 'hidden', }}>
               <img src={`${imge}`} alt="College Logo" style={{ width: '100%', height: '100%', objectFit: 'cover', padding: "1px" }} />

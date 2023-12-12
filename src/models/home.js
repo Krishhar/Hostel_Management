@@ -1,7 +1,7 @@
 import { Avatar, Box, Container, Grid, Paper, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
-import Photo from './photos';
 import imge from "../css/logo.png"
+import d from "../css/bg2.png"
 
 
 const Home = () => {
@@ -15,7 +15,7 @@ const Home = () => {
 
   return (
 
-    <Container sx={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', border: "1px dotted", borderRadius: "10px", padding: "10px", fontFamily: "inherit", position: "absolute", top: "100px" }}>
+    <Container sx={{ backgroundImage: `url(${d})`, border: "1px dotted", borderRadius: "10px", padding: "10px", fontFamily: "inherit", position: "absolute", top: "100px" }}>
       <img
         src={`${imge}`}
         alt="College Logo"

@@ -22,21 +22,15 @@ body {
 }
 
 .hbg {
-  background-image: url('./css/hg.png');
+  background-image: url('./css/bg3.png');
   }
 
   .fbg{
-    background: #30E8BF;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #FF8235, #30E8BF);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    background-image: url('./css/of.png')
   }
 
   .dbg{
-    background: #bdc3c7;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
   }
 
 .lg {
@@ -50,10 +44,14 @@ background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, F
 }
 
 .even-row {
-  background-color: #ffffff;
+  background-image: url('./css/bg4.png');
   color:#000000;
 }
 
+.even-rowh {
+  background-image: url('./css/bg5.png');
+  color:#000000;
+}
 .odd-row {
   background-color: #080808dd;
   color: #ffffff;
@@ -73,3 +71,10 @@ background: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, F
 }
 
 
+.statbg{
+  background-image: url('./css/of2.png');
+}
+
+.dashbg{
+  background-image: url('./css/of3.png');
+}

@@ -43,20 +43,24 @@ const ClassAdvisorHistory = () => {
 
   return (
     <section style={{background:`url((${image}))` }}>
-      <h1 style={{ textAlign: 'center' }}>Class Advisor History</h1><br/>
+      <br/>
+      <br/>
+      <h1 style={{ textAlign: 'center' }}>Class Advisor History</h1>
       <ul style={{ listStyle: 'none', padding: 0, textAlign:"center"} }>
         {history.map((item,index) => (
           <li key={item._id}
           id={`outpass_${item._id}`}
-          className={index % 2 === 0 ? 'even-row' : 'odd-row'}
+          className={index % 2 === 0 ? 'even-rowh' : 'odd-row'}
            style={{
             marginBottom: '20px',
             padding: '20px',
             borderRadius: '8px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-            ,border: "5px solid goldenrod"
+            ,border: "5px solid goldenrod",
+            fontSize:"25px"
           }}>
             <div>
+              <br/>
             <div style={{ marginBottom: '20px' }}><strong>Student:</strong> {item.firstName} </div>
             <div style={{ marginBottom: '20px' }}><strong>RollNo:</strong> {item.rollNo} </div>
             <div style={{ marginBottom: '20px' }}><strong>Year:</strong> {item.Year} </div>      
@@ -66,14 +70,15 @@ const ClassAdvisorHistory = () => {
             <div style={{ marginBottom: '20px' }}><strong>Status:</strong> {item.status}</div>
             <div style={{ marginBottom: '20px' }}><strong>Date of Approval/Rejection:</strong> {item.classAdvisorApprovalDate}</div>
             </div>
+            <br/>
             <button
       onClick={() => handleDownload(item)}
       style={{
         marginRight: '10px',
         padding: '2px',
-        width: '100px',
-        height: '40px',
-        fontSize: '15px',
+        width: '200px',
+        height: '70px',
+        fontSize: '25px',
         backgroundImage: 'linear-gradient(to right, #32be8f, #38d39f, #32be8f)',
         backgroundSize: '200%',
         color: '#fff',

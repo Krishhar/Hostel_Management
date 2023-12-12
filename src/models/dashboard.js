@@ -1,7 +1,6 @@
 // Dashboard.js
 import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
-import Holiday from './Holiday';
 import Previous from './Previous';
 import Calen from './Calen';
 
@@ -10,21 +9,18 @@ import Calen from './Calen';
 const Dashboard = () => {
 
   useEffect(() => {
-    document.body.classList.add('dbg');
+    document.body.classList.add('dashbg');
     return () => {
-      document.body.classList.remove('dbg');
+      document.body.classList.remove('dashbg');
     };
   }, []);
 
   return (
     <Grid container spacing={3} sx={{position:"relative",top:"100px"}}>
-      <Grid sx={{backgroundColor:'rgba(31, 38, 46, 0.5)'}} item xs={12}>
+      <Grid item xs={12}>
         <Calen/>
      </Grid>
-      <Grid item xs={6}>
-        <Holiday />
-      </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <Previous />
       </Grid>
     </Grid>

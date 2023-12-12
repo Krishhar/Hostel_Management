@@ -51,16 +51,17 @@ const Previous = () => {
   }, []);
 
   return (
-    <Box sx={{ margin: '10px', padding: '20px', border: '1px double green', backgroundColor: '#dedede' }}>
-      <Typography variant="h5">Previous Approved/Rejected Requests:</Typography>
+    <Box sx={{ margin: '10px', padding: '20px', border: '10px double green', backgroundColor: ' rgba(0, 0, 0, 0.8)', color:'white' }}>
+      <Typography variant="h4">Previous Approved/Rejected Requests:</Typography>
       {previousRequests.length === 0 ? (
         <Typography variant="body1">No approved or rejected requests found.</Typography>
       ) : (
         <ul>
           {previousRequests.map((request) => (
             <li key={request._id}>
+              
               {/* Render information about each approved or rejected request */}
-              <Typography variant="body1">{`Email: ${localStorage.getItem('email')}, Date: ${request.date}, Status: ${request.status}`}</Typography><br/>
+              <Typography variant="body1">{`Email: ${localStorage.getItem('email')}, Date: ${request.sDate}, Status: ${request.status}`}</Typography><br/>
               
             </li>
           ))}

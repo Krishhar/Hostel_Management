@@ -69,7 +69,8 @@ const AdvisorDashboard = () => {
 
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>Advisor Dashboard</h1><br /><br />
+       <br/>
+      <h1 style={{ textAlign: 'center' }}>Advisor Dashboard</h1>
       <ul style={{ listStyle: 'none', padding: 0 , textAlign: 'center'}}>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '5px',marginBottom:"20px", background: "linear-gradient( 135deg, #FFA8A8 10%, #FCFF00 100%)",}}><br/>
             <div style={{ width: '100px', height: '105px', borderRadius: '50%', overflow: 'hidden',display:"flex" }}>
@@ -85,7 +86,8 @@ const AdvisorDashboard = () => {
               padding: '20px',
               borderRadius: '8px',
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-              ,border: "5px solid goldenrod"
+              ,border: "5px solid goldenrod",
+              fontSize:'25px'
             }}>
 
             <div style={{ marginBottom: '20px' }}><strong>Student:</strong> {application.firstName} {application.lastName}</div>
@@ -94,14 +96,15 @@ const AdvisorDashboard = () => {
             <div style={{ marginBottom: '20px' }}><strong>Reason:</strong> {application.outpassFor}</div>
             <div style={{ marginBottom: '20px' }}><strong>Status:</strong> {application.status}</div>
             <div style={{ marginTop: '10px' }}>
+              <br/>
               <button id={`acc_${application._id}`}
                 onClick={() => handleApprove(application._id)}
                 style={{
                   marginRight: '10px',
                   padding: '2px',
-                  width: '100px',
-                  height: '40px',
-                  fontSize: '15px',
+                  width: '130px',
+                  height: '50px',
+                  fontSize: '20px',
                   backgroundImage: 'linear-gradient(to right, #32be8f, #38d39f, #32be8f)',
                   backgroundSize: '200%',
                   color: '#fff',
@@ -118,9 +121,9 @@ const AdvisorDashboard = () => {
                 style={{
                   marginRight: '10px',
                   marginLeft: '10px',
-                  width: '100px',
-                  height: '40px',
-                  fontSize: '15px',
+                  width: '130px',
+                  height: '50px',
+                  fontSize: '20px',
                   padding: '2px',
                   backgroundImage: 'linear-gradient(to right, #bd1313,#bd1313,#bd1313)',
                   backgroundSize: '200%',
@@ -136,9 +139,9 @@ const AdvisorDashboard = () => {
                 onClick={() => redirectToHistory(application._id)}
                 style={{
                   marginLeft: '10px',
-                  width: '100px',
-                  height: '40px',
-                  fontSize: '15px',
+                  width: '130px',
+                  height: '50px',
+                  fontSize: '20px',
                   padding: '2px',
                   backgroundColor: '#007BFF',
                   color: '#fff',
