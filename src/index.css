@@ -78,3 +78,11 @@ background: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, F
 .dashbg{
   background-image: url('./css/of3.png');
 }
+
+.tablebg{
+  background-image: url('./css/t2.png');
+}
+
+.tdbg{
+  background-image: url('./css/tablebg.png');
+}

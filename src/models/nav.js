@@ -120,7 +120,7 @@ const Nav = () => {
   return (
     <AppBar position="fixed" >
       <StyledToolbar>
-        <Typography variant='h5' sx={{display:"flex",justifyContent:"left", color:"white", fontFamily:"inherit"}}>ONLINE OUTPASS APPLICATION</Typography> 
+        <Typography variant='h5' sx={{display:"flex",justifyContent:"left", color:"white", fontFamily:"inherit"}}>HOSTEL OUTPASS APPLICATION</Typography> 
         <Box sx={{ display: 'flex', justifyContent: 'space', gap: '30px', color: 'white', padding:".8%" }}>
           <StyledLink to='/'>Home</StyledLink>
           {isUserSignedIn ? (
@@ -136,14 +136,18 @@ const Nav = () => {
                 <>
                   {/* Additional links for class advisor */}
                   <StyledLink to='advisor'>Advisor Dashboard</StyledLink>
+                  <StyledLink to='/application'>Report</StyledLink>
                   <StyledLink to='history'>History</StyledLink>
+                  
                 </>
               )}
               {userRole === 'deputyWarden' && (
                 <>
                   {/* Additional links for deputy warden */}
                   <StyledLink to='/deputyWarden'>Deputy Warden Dashboard</StyledLink>
+                  <StyledLink to='/application'>Report</StyledLink>
                   <StyledLink to='history'>History</StyledLink>
+                  
                 </>
               )}
               <Button onClick={handleSignOut}>Sign Out</Button>
@@ -152,6 +156,7 @@ const Nav = () => {
             <>
               <StyledLink to='/login'>Login</StyledLink>
               <StyledLink to='/register'>Register</StyledLink>
+              
             </>
           )}
         </Box>

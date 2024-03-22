@@ -88,7 +88,7 @@ const DeputyWardenHistory = () => {
 
   return (
     <section style={{background:`url((${image}))` }}>
-      <h1 style={{ textAlign: 'center' }}>Class Advisor History</h1><br/>
+      <h1 style={{ textAlign: 'center' }}>Deputy Warden History</h1><br/>
       <ul style={{ listStyle: 'none', padding: 0, textAlign:"center"} }>
         {history.map((item,index) => (
           <li key={item._id}
@@ -104,6 +104,7 @@ const DeputyWardenHistory = () => {
             <div>
             <div style={{ marginBottom: '20px' }}><strong>Student:</strong> {item.firstName} </div>
             <div style={{ marginBottom: '20px' }}><strong>RollNo:</strong> {item.rollNo} </div>
+            <div style={{ marginBottom: '20px' }}><strong>Department:</strong> {item.Department} </div> 
             <div style={{ marginBottom: '20px' }}><strong>Year:</strong> {item.Year} </div>      
             <div style={{ marginBottom: '20px' }}><strong>Start Date:</strong> {item.sDate}</div>
             <div style={{ marginBottom: '20px' }}><strong>End Date:</strong> {item.eDate}</div>

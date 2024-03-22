@@ -198,12 +198,12 @@ const Register = () => {
             sx={{ mb: 2 }}
           >
             <MenuItem value='Bharathi'>Bharathi</MenuItem>
-            <MenuItem value='valluvar'>valluvar</MenuItem>
+            <MenuItem value='valluvar'>Valluvar</MenuItem>
             <MenuItem value='Sankar'>Sankar</MenuItem>
             <MenuItem value='Dheeran'>Dheeran</MenuItem>
             <MenuItem value='Kamban'>Kamban</MenuItem>
             <MenuItem value='ponnar'>Ponnar</MenuItem>
-            <MenuItem value='ielango'>Ielango</MenuItem>
+            <MenuItem value='ielango'>Elango</MenuItem>
           </TextField>
         ) : null}
 

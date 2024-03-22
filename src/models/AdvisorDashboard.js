@@ -70,7 +70,7 @@ const AdvisorDashboard = () => {
   return (
     <div>
        <br/>
-      <h1 style={{ textAlign: 'center' }}>Advisor Dashboard</h1>
+      <h1 style={{ textAlign: 'center' }}>Class Advisor Dashboard</h1>
       <ul style={{ listStyle: 'none', padding: 0 , textAlign: 'center'}}>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '5px',marginBottom:"20px", background: "linear-gradient( 135deg, #FFA8A8 10%, #FCFF00 100%)",}}><br/>
             <div style={{ width: '100px', height: '105px', borderRadius: '50%', overflow: 'hidden',display:"flex" }}>
@@ -91,10 +91,15 @@ const AdvisorDashboard = () => {
             }}>
 
             <div style={{ marginBottom: '20px' }}><strong>Student:</strong> {application.firstName} {application.lastName}</div>
+            <div style={{ marginBottom: '20px' }}><strong>Department:</strong> {application.Department}</div>
+            <div style={{ marginBottom: '20px' }}><strong>Roll No:</strong> {application.rollNo}</div>
+            <div style={{ marginBottom: '20px' }}><strong>Hostel:</strong> {application.Hostel}</div>
+            <div style={{ marginBottom: '20px' }}><strong>Room No:</strong> {application.Room}</div>
             <div style={{ marginBottom: '20px' }}><strong>Start Date:</strong> {application.sDate}</div>
             <div style={{ marginBottom: '20px' }}><strong>End Date:</strong> {application.eDate}</div>
             <div style={{ marginBottom: '20px' }}><strong>Reason:</strong> {application.outpassFor}</div>
             <div style={{ marginBottom: '20px' }}><strong>Status:</strong> {application.status}</div>
+
             <div style={{ marginTop: '10px' }}>
               <br/>
               <button id={`acc_${application._id}`}

@@ -61,7 +61,8 @@ const Previous = () => {
             <li key={request._id}>
               
               {/* Render information about each approved or rejected request */}
-              <Typography variant="body1">{`Email: ${localStorage.getItem('email')}, Date: ${request.sDate}, Status: ${request.status}`}</Typography><br/>
+              <Typography variant="h5">{`Email: ${localStorage.getItem('email')}, RollNo:${request.rollNo}, Date: ${request.sDate}, Status: ${request.status}
+              ,Department: ${request.Department},Year: ${request.Year},Hostel: ${request.Hostel}`}</Typography><br/>
               
             </li>
           ))}

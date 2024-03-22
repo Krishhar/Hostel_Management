@@ -126,6 +126,11 @@
               <p><strong>Deputy Warden Approval:</strong> {userDetails.deputyWardenApproval ? 'Approved' : 'Pending'}</p>
               <p><strong>Email:</strong> {storedEmail}</p>
               <p><strong>Name:</strong> {userDetails.firstName}</p>
+              <p><strong>Roll No:</strong> {userDetails.rollNo}</p>
+              <p><strong>Hostel:</strong> {userDetails.Hostel}</p>
+              <p><strong>Room No:</strong> {userDetails.Room}</p>
+              <p><strong>From:</strong> {userDetails.sDate}</p>
+              <p><strong>To:</strong> {userDetails.eDate}</p>
               <p><strong>Outpass Status:</strong> {userDetails.status} </p>
             </div>
             <div style={styles.buttonContainer}>

@@ -10,6 +10,7 @@ import AdvisorDashboard from './models/AdvisorDashboard';
 import DeputyWardenDashboard from './models/DeputyWardenDashboard';
 import ClassAdvisorHistory from './models/ClassAdvisorHistory';
 import DeputyWardenHistory from './models/DeputyWardenHistory';
+import OutpassApplicationsComponent from './models/dispayOutpass';
 
 
 function App() {
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
         <>
           <Route path='advisor' element={<AdvisorDashboard />} />
           <Route path='history' element={<ClassAdvisorHistory/>}/>
+          <Route path='application' element={<OutpassApplicationsComponent/>}/>
           
         </>
       )}
@@ -46,11 +48,13 @@ const router = createBrowserRouter(
            
           <Route path='DeputyWarden' element={<DeputyWardenDashboard />} />
           <Route path='history' element={<DeputyWardenHistory/>}/>
+          <Route path='application' element={<OutpassApplicationsComponent/>}/>
           
         </>
       )}
       <Route path='login' element={<Login />} />
       <Route path='register' element={<Register />} />
+      
     </Route>
   )
 );

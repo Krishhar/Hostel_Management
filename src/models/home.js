@@ -2,9 +2,12 @@ import { Avatar, Box, Container, Grid, Paper, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import imge from "../css/logo.png"
 import d from "../css/bg2.png"
+import axios from 'axios';
 
 
 const Home = () => {
+
+  const[username,setUsername] = ('')
 
   useEffect(() => {
     document.body.classList.add('hbg');
@@ -12,6 +15,15 @@ const Home = () => {
       document.body.classList.remove('hbg');
     };
   }, []);
+
+  axios.get('http://localhost:3001/register') // Replace with your actual API endpoint
+  .then((response) => {
+    setUsername(response.data.firstName);
+    console.log(username)
+  })
+  .catch((error) => {
+    console.error('Error fetching username:', error);
+  });
 
   return (
 
@@ -21,13 +33,14 @@ const Home = () => {
         alt="College Logo"
         style={{ width: "100%" }}
       />
-      <h2 style={{ color: '#000000', padding: '20px', backgroundColor: 'white', marginBottom: '20px', borderRadius: '20px', display: 'flex', justifyContent: 'center' }}>HOME</h2>
+      <h1 style={{ color: '#000000', padding: '20px', backgroundColor: 'yellow', marginBottom: '20px', borderRadius: '20px', display: 'flex', justifyContent: 'center' }}>HOSTEL OUTPASS APPLICATION</h1>
       <Typography sx={{
         padding: '10px', marginTop: '70px', background: "#FBD3E9",
         background: "-webkit-linear-gradient(to right, #BB377D, #FBD3E9)",
         background: "linear-gradient(to right, #BB377D, #FBD3E9)",
         color: '#eeeeee', borderRadius: '20px 0px 10px 0px'
       }}>
+       
         <h2 style={{ padding: '10px', fontSize: '1.5em'
 }}>Process to get Outpass</h2>
         <Box sx={{ color: 'black', backgroundColor: 'white', padding: '20px', lineHeight: '2', borderTopLeftRadius: '10px' }}>
